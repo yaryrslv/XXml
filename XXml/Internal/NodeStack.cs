@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using XXml.XmlEntities;
 
 namespace XXml.Internal;
 
@@ -8,7 +9,7 @@ namespace XXml.Internal;
 [DebuggerTypeProxy(typeof(NodeStackDebuggerTypeProxy))]
 internal unsafe struct NodeStack : IDisposable
 {
-    private XmlNode_** _ptr;
+    private XmlNodeStruct** _ptr;
 
     private int Capacity { get; set; }
 
@@ -17,14 +18,14 @@ internal unsafe struct NodeStack : IDisposable
     public NodeStack(int capacity)
     {
         Debug.Assert(capacity >= 0);
-        _ptr = (XmlNode_**) Marshal.AllocHGlobal(capacity * sizeof(XmlNode_*));
-        AllocationSafety.Add(capacity * sizeof(XmlNode_*));
+        _ptr = (XmlNodeStruct**) Marshal.AllocHGlobal(capacity * sizeof(XmlNodeStruct*));
+        AllocationSafety.Add(capacity * sizeof(XmlNodeStruct*));
         Capacity = capacity;
         Count = 0;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Push(XmlNode_* value)
+    public void Push(XmlNodeStruct* value)
     {
         if (Capacity == Count) GrowUp();
         Debug.Assert(Capacity > Count);
@@ -33,7 +34,7 @@ internal unsafe struct NodeStack : IDisposable
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XmlNode_* Pop()
+    public XmlNodeStruct* Pop()
     {
         if (Count == 0) ThrowHelper.ThrowInvalidOperation("Stack has no items.");
         Count--;
@@ -41,14 +42,14 @@ internal unsafe struct NodeStack : IDisposable
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XmlNode_* Peek()
+    public XmlNodeStruct* Peek()
     {
         if (Count == 0) ThrowHelper.ThrowInvalidOperation("Stack has no items.");
         return _ptr[Count - 1];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryPeek(out XmlNode_* item)
+    public bool TryPeek(out XmlNodeStruct* item)
     {
         if (Count == 0)
         {
@@ -63,7 +64,7 @@ internal unsafe struct NodeStack : IDisposable
     public void Dispose()
     {
         Marshal.FreeHGlobal((IntPtr) _ptr);
-        AllocationSafety.Remove(Capacity * sizeof(XmlNode_*));
+        AllocationSafety.Remove(Capacity * sizeof(XmlNodeStruct*));
         Capacity = 0;
         Count = 0;
     }
@@ -72,20 +73,20 @@ internal unsafe struct NodeStack : IDisposable
     private void GrowUp()
     {
         var newCapacity = Math.Max(4, Capacity * 2);
-        var ptr = (XmlNode_**) Marshal.AllocHGlobal(newCapacity * sizeof(XmlNode_*));
-        AllocationSafety.Add(newCapacity * sizeof(XmlNode_*));
+        var ptr = (XmlNodeStruct**) Marshal.AllocHGlobal(newCapacity * sizeof(XmlNodeStruct*));
+        AllocationSafety.Add(newCapacity * sizeof(XmlNodeStruct*));
         try
         {
             SpanHelper.CreateSpan<IntPtr>(_ptr, Count).CopyTo(SpanHelper.CreateSpan<IntPtr>(ptr, newCapacity));
             Marshal.FreeHGlobal((IntPtr) _ptr);
-            AllocationSafety.Remove(Capacity * sizeof(XmlNode_*));
+            AllocationSafety.Remove(Capacity * sizeof(XmlNodeStruct*));
             _ptr = ptr;
             Capacity = newCapacity;
         }
         catch
         {
             Marshal.FreeHGlobal((IntPtr) ptr);
-            AllocationSafety.Remove(newCapacity * sizeof(XmlNode_*));
+            AllocationSafety.Remove(newCapacity * sizeof(XmlNodeStruct*));
             throw;
         }
     }
@@ -102,11 +103,11 @@ internal unsafe struct NodeStack : IDisposable
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        public XmlNode_*[] Items
+        public XmlNodeStruct*[] Items
         {
             get
             {
-                var array = new XmlNode_*[_entity.Count];
+                var array = new XmlNodeStruct*[_entity.Count];
                 for (var i = 0; i < array.Length; i++) array[i] = _entity._ptr[i];
                 return array;
             }

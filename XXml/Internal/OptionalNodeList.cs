@@ -1,5 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using XXml.ValueObjects;
+using XXml.XmlEntities;
 
 namespace XXml.Internal;
 

@@ -1,3 +1,5 @@
+using XXml.ValueObjects;
+
 namespace XXml.Internal;
 
 internal static class PredefinedEntityTable
