@@ -1,4 +1,7 @@
 # XXml
+
+## Benchmarks
+
 ```
 
 BenchmarkDotNet v0.13.7, Windows 10 (10.0.19045.3208/22H2/2022Update)
@@ -10,8 +13,18 @@ BenchmarkDotNet v0.13.7, Windows 10 (10.0.19045.3208/22H2/2022Update)
 Job=RyuJitX64  Jit=RyuJit  Platform=X64  
 
 ```
+
 |               Method |     Mean |   Error |   StdDev | Ratio | RatioSD |      Gen0 |  Allocated | Alloc Ratio |
 |--------------------- |---------:|--------:|---------:|------:|--------:|----------:|-----------:|------------:|
 |                 XXml | 315.0 ms | 6.25 ms | 13.19 ms |  1.00 |    0.00 |         - |      944 B |        1.00 |
 | System.Xml.XmlReader | 403.4 ms | 1.65 ms |  1.38 ms |  1.25 |    0.04 | 4000.0000 | 28020928 B |   29,683.19 |
 
+## Usage
+
+```csharp
+# Get XML from file
+var xml = XmlParser.ParseFile(FilePath);
+
+# Get all nodes by type
+xml.GetAllNodes(XmlNodeType.ElementNode)
+```
