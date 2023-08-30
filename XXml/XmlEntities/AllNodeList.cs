@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using XXml.Internal;
+using XXml.InternalEntities;
 using XXml.ValueObjects;
 
 namespace XXml.XmlEntities;

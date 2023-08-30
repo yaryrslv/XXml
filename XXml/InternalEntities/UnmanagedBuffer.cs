@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace XXml.Internal;
+namespace XXml.InternalEntities;
 
 /// <summary>Неуправляемый буфер памяти типа <see langword="byte" /></summary>
 /// .

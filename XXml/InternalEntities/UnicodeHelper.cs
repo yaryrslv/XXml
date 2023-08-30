@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace XXml.Internal;
+namespace XXml.InternalEntities;
 
 internal static class UnicodeHelper
 {

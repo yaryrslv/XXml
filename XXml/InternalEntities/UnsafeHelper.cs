@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace XXml.Internal;
+namespace XXml.InternalEntities;
 
 internal static class UnsafeHelper
 {

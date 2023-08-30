@@ -1,6 +1,6 @@
 using System.Buffers;
 using System.Runtime.CompilerServices;
-using XXml.Internal;
+using XXml.InternalEntities;
 using XXml.ValueObjects;
 
 namespace XXml.XmlEntities;

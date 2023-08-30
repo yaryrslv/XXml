@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using XXml.ValueObjects;
 using XXml.XmlEntities;
 
-namespace XXml.Internal;
+namespace XXml.InternalEntities;
 
 internal readonly unsafe struct OptionalNodeList : IDisposable, IReference
 {

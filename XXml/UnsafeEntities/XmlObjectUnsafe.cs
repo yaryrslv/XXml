@@ -1,10 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using XXml.Internal;
+using XXml.InternalEntities;
 using XXml.ValueObjects;
 using XXml.XmlEntities;
 
-namespace XXml.Unsafes;
+namespace XXml.UnsafeEntities;
 
 /// <summary>
 ///     [ПРЕДУПРЕЖДЕНИЕ] Не используйте этот метод, если не знаете, как его использовать. Этот метод является скрытым.

@@ -1,8 +1,8 @@
 ﻿using System.Text;
-using XXml.Internal;
+using XXml.InternalEntities;
 using XXml.XmlEntities;
 
-namespace XXml.Unsafes;
+namespace XXml.UnsafeEntities;
 
 /// <summary>
 ///     [ПРЕДУПРЕЖДЕНИЕ] Не используйте это, если не знаете, как использовать. Класс скрыт.

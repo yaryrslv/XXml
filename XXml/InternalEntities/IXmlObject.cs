@@ -1,7 +1,7 @@
 ﻿using XXml.ValueObjects;
 using XXml.XmlEntities;
 
-namespace XXml.Internal;
+namespace XXml.InternalEntities;
 
 internal interface IXmlObject : IDisposable
 {
