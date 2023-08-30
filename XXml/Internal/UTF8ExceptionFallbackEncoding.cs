@@ -8,5 +8,5 @@ internal sealed class Utf8ExceptionFallbackEncoding : UTF8Encoding
     {
     }
 
-    public static Utf8ExceptionFallbackEncoding Instance { get; } = new();
+    public static Utf8ExceptionFallbackEncoding? Instance { get; } = new();
 }
