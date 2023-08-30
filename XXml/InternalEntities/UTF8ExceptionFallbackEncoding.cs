@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace XXml.Internal;
+namespace XXml.InternalEntities;
 
 internal sealed class Utf8ExceptionFallbackEncoding : UTF8Encoding
 {

@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 #endif
 
-namespace XXml.Internal;
+namespace XXml.InternalEntities;
 
 internal static class BitOperationHelper
 {

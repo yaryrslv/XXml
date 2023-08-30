@@ -10,7 +10,7 @@
 using System.Buffers;
 #endif
 
-namespace XXml.Internal;
+namespace XXml.InternalEntities;
 
 internal static class StreamExtension
 {

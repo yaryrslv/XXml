@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using XXml.Internal;
+using XXml.InternalEntities;
 using XXml.ValueObjects;
 
 namespace XXml.XmlEntities;

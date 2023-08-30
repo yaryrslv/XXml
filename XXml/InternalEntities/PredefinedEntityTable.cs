@@ -1,6 +1,6 @@
 using XXml.ValueObjects;
 
-namespace XXml.Internal;
+namespace XXml.InternalEntities;
 
 internal static class PredefinedEntityTable
 {

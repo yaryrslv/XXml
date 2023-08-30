@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using XXml.ValueObjects;
 
-namespace XXml.Internal;
+namespace XXml.InternalEntities;
 // [NOTE]
 // - This list re-allocate and copy memory when capacity increases, the address of memories can be changed.
 

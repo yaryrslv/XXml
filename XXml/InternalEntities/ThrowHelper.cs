@@ -8,7 +8,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace XXml.Internal;
+namespace XXml.InternalEntities;
 
 internal static class ThrowHelper
 {

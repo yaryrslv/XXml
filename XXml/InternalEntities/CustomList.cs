@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using XXml.ValueObjects;
 
-namespace XXml.Internal;
+namespace XXml.InternalEntities;
 
 // [ПРИМЕЧАНИЕ]
 // - Предусмотрены только функции "Add an item" и "Dispose the list".

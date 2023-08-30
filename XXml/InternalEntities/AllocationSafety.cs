@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace XXml.Internal;
+namespace XXml.InternalEntities;
 
 internal static class AllocationSafety
 {

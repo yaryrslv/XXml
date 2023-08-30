@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using XXml.ValueObjects;
 
-namespace XXml.Internal;
+namespace XXml.InternalEntities;
 
 internal static unsafe class DataOffsetHelper
 {

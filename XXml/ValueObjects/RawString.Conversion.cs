@@ -1,7 +1,7 @@
 ﻿using System.Buffers;
 using System.Buffers.Text;
 using System.Runtime.CompilerServices;
-using XXml.Internal;
+using XXml.InternalEntities;
 
 namespace XXml.ValueObjects;
 

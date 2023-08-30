@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using XXml.XmlEntities;
 
-namespace XXml.Internal;
+namespace XXml.InternalEntities;
 
 [DebuggerDisplay("NodeStack[{Count}]")]
 [DebuggerTypeProxy(typeof(NodeStackDebuggerTypeProxy))]

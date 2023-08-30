@@ -2,7 +2,7 @@ using System.Diagnostics;
 using XXml.ValueObjects;
 using XXml.XmlEntities;
 
-namespace XXml.Internal;
+namespace XXml.InternalEntities;
 
 internal static class XmlnsHelper
 {

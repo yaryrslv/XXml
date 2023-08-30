@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using XXml.Internal;
+using XXml.InternalEntities;
 
 namespace XXml.ValueObjects;
 

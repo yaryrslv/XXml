@@ -1,6 +1,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
-using XXml.Internal;
+using XXml.InternalEntities;
 
 namespace XXml.ValueObjects;
 

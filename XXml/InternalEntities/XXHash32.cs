@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace XXml.Internal;
+namespace XXml.InternalEntities;
 
 internal static unsafe class XxHash32
 {
