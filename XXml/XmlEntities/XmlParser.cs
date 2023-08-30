@@ -57,9 +57,9 @@ public static unsafe class XmlParser
     /// <summary>Паросинг xml-файла в кодировке UTF8 (как с BOM, так и без него).</summary>
     /// <param name="stream">поток для чтения</param>
     /// <returns>xml объект</returns>
-    public static XmlObject Parse(Stream stream)
+    private static XmlObject Parse(Stream? stream)
     {
-        var fileSizeHint = stream.CanSeek ? (int) stream.Length : 1024 * 1024;
+        var fileSizeHint = stream is {CanSeek: true} ? (int) stream.Length : 1024 * 1024;
         return Parse(stream, fileSizeHint);
     }
 
@@ -68,10 +68,10 @@ public static unsafe class XmlParser
     /// <param name="fileSizeHint">подсказка размера файла, которая используется для оптимизации памяти</param>
     /// .
     /// <returns>xml объект</returns>
-    public static XmlObject Parse(Stream stream, int fileSizeHint)
+    public static XmlObject Parse(Stream? stream, int fileSizeHint)
     {
         if (stream is null) ThrowHelper.ThrowNullArg(nameof(stream));
-        var (buf, length) = stream!.ReadAllToUnmanaged(fileSizeHint);
+        var (buf, length) = stream.ReadAllToUnmanaged(fileSizeHint);
         try
         {
             return new XmlObject(ParseCore(ref buf, length));
@@ -87,9 +87,9 @@ public static unsafe class XmlParser
     /// <param name="stream">поток для чтения</param>
     /// <param name="encoding">кодировка <paramref name="stream" /></param>
     /// <returns>xml объект</returns>
-    public static XmlObject Parse(Stream stream, Encoding encoding)
+    public static XmlObject Parse(Stream? stream, Encoding? encoding)
     {
-        var fileSizeHint = stream.CanSeek ? (int) stream.Length : 1024 * 1024;
+        var fileSizeHint = stream is {CanSeek: true} ? (int) stream.Length : 1024 * 1024;
         return Parse(stream, encoding, fileSizeHint);
     }
 
@@ -98,16 +98,16 @@ public static unsafe class XmlParser
     /// <param name="encoding">кодировка <paramref name="stream" /></param>
     /// <param name="fileSizeHint">подсказка размера файла</param>
     /// <returns>xml объект</returns>
-    public static XmlObject Parse(Stream stream, Encoding encoding, int fileSizeHint)
+    public static XmlObject Parse(Stream? stream, Encoding? encoding, int fileSizeHint)
     {
         if (stream is null) ThrowHelper.ThrowNullArg(nameof(stream));
         if (encoding is null) ThrowHelper.ThrowNullArg(nameof(encoding));
-        if (encoding is UTF8Encoding || encoding is ASCIIEncoding) return Parse(stream!);
+        if (encoding is UTF8Encoding || encoding is ASCIIEncoding) return Parse(stream);
 
-        if (encoding!.Equals(Encoding.Unicode) && BitConverter.IsLittleEndian)
+        if (encoding.Equals(Encoding.Unicode) && BitConverter.IsLittleEndian)
         {
             // The runtime is little endian and the encoding is utf-16 LE with BOM
-            var (utf16LeBuf, utf16ByteLength) = stream!.ReadAllToUnmanaged(fileSizeHint);
+            var (utf16LeBuf, utf16ByteLength) = stream.ReadAllToUnmanaged(fileSizeHint);
             using (utf16LeBuf)
             {
                 var utf16LeSpan = SpanHelper.CreateReadOnlySpan<char>((void*) utf16LeBuf.Ptr, utf16ByteLength / sizeof(char));
@@ -117,11 +117,11 @@ public static unsafe class XmlParser
             }
         }
 
-        var (buf, byteLength) = stream!.ReadAllToUnmanaged(fileSizeHint);
+        var (buf, byteLength) = stream.ReadAllToUnmanaged(fileSizeHint);
         UnmanagedBuffer charBuf = default;
-        ReadOnlySpan<char> charSpan = default;
         try
         {
+            ReadOnlySpan<char> charSpan;
             try
             {
                 var charCount = encoding.GetCharCount((byte*) buf.Ptr, byteLength);
@@ -145,7 +145,7 @@ public static unsafe class XmlParser
     /// <summary>Паросинг xml-файла в кодировке UTF8 (как с BOM, так и без него).</summary>
     /// <param name="filePath">путь к файлу для разбора</param>
     /// <returns>xml объект</returns>
-    public static XmlObject ParseFile(string filePath)
+    public static XmlObject ParseFile(string? filePath)
     {
         return ParseFile(filePath, Utf8ExceptionFallbackEncoding.Instance);
     }
@@ -154,15 +154,15 @@ public static unsafe class XmlParser
     /// <param name="filePath">путь к файлу для разбора</param>
     /// <param name="encoding">кодировка файла</param>
     /// <returns>xml объект</returns>
-    public static XmlObject ParseFile(string filePath, Encoding encoding)
+    private static XmlObject ParseFile(string? filePath, Encoding? encoding)
     {
         if (filePath is null) ThrowHelper.ThrowNullArg(nameof(filePath));
         if (encoding is null) ThrowHelper.ThrowNullArg(nameof(encoding));
 
-        return new XmlObject(ParseFileCore(filePath!, encoding!));
+        return new XmlObject(ParseFileCore(filePath, encoding));
     }
 
-    internal static XmlObjectCore ParseFileCore(string filePath, Encoding encoding)
+    internal static XmlObjectCore ParseFileCore(string? filePath, Encoding? encoding)
     {
         if (encoding is UTF8Encoding || encoding is ASCIIEncoding)
         {
@@ -180,7 +180,7 @@ public static unsafe class XmlParser
             }
         }
 
-        if (encoding.Equals(Encoding.Unicode) && BitConverter.IsLittleEndian)
+        if (encoding != null && encoding.Equals(Encoding.Unicode) && BitConverter.IsLittleEndian)
         {
             // Little endian utf-16 LE with BOM
             var (utf16LeBuf, utf16LeByteLength) = FileHelper.ReadFileToUnmanaged(filePath);
@@ -199,16 +199,19 @@ public static unsafe class XmlParser
 
         {
             UnmanagedBuffer charBuf = default;
-            ReadOnlySpan<char> charSpan = default;
             try
             {
                 var (buf, byteLength) = FileHelper.ReadFileToUnmanaged(filePath);
+                ReadOnlySpan<char> charSpan = default;
                 try
                 {
-                    var charCount = encoding.GetCharCount((byte*) buf.Ptr, byteLength);
-                    charBuf = new UnmanagedBuffer(charCount * sizeof(char));
-                    encoding.GetChars((byte*) buf.Ptr, byteLength, (char*) charBuf.Ptr, charCount);
-                    charSpan = SpanHelper.CreateReadOnlySpan<char>((void*) charBuf.Ptr, charCount);
+                    if (encoding != null)
+                    {
+                        var charCount = encoding.GetCharCount((byte*) buf.Ptr, byteLength);
+                        charBuf = new UnmanagedBuffer(charCount * sizeof(char));
+                        encoding.GetChars((byte*) buf.Ptr, byteLength, (char*) charBuf.Ptr, charCount);
+                        charSpan = SpanHelper.CreateReadOnlySpan<char>((void*) charBuf.Ptr, charCount);
+                    }
                 }
                 finally
                 {
@@ -232,9 +235,13 @@ public static unsafe class XmlParser
             var utf8Enc = Utf8ExceptionFallbackEncoding.Instance;
             fixed (char* ptr = charSpan)
             {
-                var byteLen = utf8Enc.GetByteCount(ptr, charSpan.Length);
-                utf8Buf = new UnmanagedBuffer(byteLen);
-                utf8Enc.GetBytes(ptr, charSpan.Length, (byte*) utf8Buf.Ptr, utf8Buf.Length);
+                if (utf8Enc != null)
+                {
+                    var byteLen = utf8Enc.GetByteCount(ptr, charSpan.Length);
+                    utf8Buf = new UnmanagedBuffer(byteLen);
+                }
+
+                utf8Enc?.GetBytes(ptr, charSpan.Length, (byte*) utf8Buf.Ptr, utf8Buf.Length);
             }
 
             return ParseCore(ref utf8Buf, utf8Buf.Length);

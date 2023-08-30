@@ -234,17 +234,17 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
     }
 
     [SkipLocalsInit]
-    public bool StartsWith(ReadOnlySpan<char> other)
+    private bool StartsWith(ReadOnlySpan<char> other)
     {
         if (other.Length == 0) return true;
         var utf8 = Utf8ExceptionFallbackEncoding.Instance;
         var byteLen = utf8.GetByteCount(other);
         if (byteLen > Length) return false;
 
-        const int Threshold = 128;
-        if (byteLen <= Threshold)
+        const int threshold = 128;
+        if (byteLen <= threshold)
         {
-            var buf = stackalloc byte[Threshold];
+            var buf = stackalloc byte[threshold];
             fixed (char* ptr = other)
             {
                 utf8.GetBytes(ptr, other.Length, buf, byteLen);
@@ -287,17 +287,17 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
     }
 
     [SkipLocalsInit]
-    public bool EndsWith(ReadOnlySpan<char> other)
+    private bool EndsWith(ReadOnlySpan<char> other)
     {
         if (other.Length == 0) return true;
         var utf8 = Utf8ExceptionFallbackEncoding.Instance;
         var byteLen = utf8.GetByteCount(other);
         if (byteLen > Length) return false;
 
-        const int Threshold = 128;
-        if (byteLen <= Threshold)
+        const int threshold = 128;
+        if (byteLen <= threshold)
         {
-            var buf = stackalloc byte[Threshold];
+            var buf = stackalloc byte[threshold];
             fixed (char* ptr = other)
             {
                 utf8.GetBytes(ptr, other.Length, buf, byteLen);
@@ -325,7 +325,7 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
     }
 
 
-    public int IndexOf(byte value)
+    private int IndexOf(byte value)
     {
         var span = AsSpan();
         for (var i = 0; i < span.Length; i++)
@@ -334,7 +334,7 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
         return -1;
     }
 
-    public DataRange RangeOf(char value)
+    private DataRange RangeOf(char value)
     {
         if (value < 128)
         {
@@ -349,12 +349,12 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
         return RangeOf(SpanHelper.CreateReadOnlySpan<byte>(buf, len));
     }
 
-    public DataRange RangeOf(RawString value)
+    private DataRange RangeOf(RawString value)
     {
         return RangeOf(value.AsSpan());
     }
 
-    public DataRange RangeOf(ReadOnlySpan<byte> value)
+    private DataRange RangeOf(ReadOnlySpan<byte> value)
     {
         if (value.Length == 0) return new DataRange(0, 0);
 
@@ -366,22 +366,22 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
         return new DataRange(-1, 0);
     }
 
-    public DataRange RangeOf(string value)
+    private DataRange RangeOf(string value)
     {
         return RangeOf(value.AsSpan());
     }
 
-    public DataRange RangeOf(ReadOnlySpan<char> value)
+    private DataRange RangeOf(ReadOnlySpan<char> value)
     {
         if (value.Length == 0) return new DataRange(0, 0);
         var utf8 = Utf8ExceptionFallbackEncoding.Instance;
         var byteLen = utf8.GetByteCount(value);
         if (byteLen > Length) return new DataRange(-1, 0);
 
-        const int Threshold = 128;
-        if (byteLen <= Threshold)
+        const int threshold = 128;
+        if (byteLen <= threshold)
         {
-            var buf = stackalloc byte[Threshold];
+            var buf = stackalloc byte[threshold];
             fixed (char* ptr = value)
             {
                 utf8.GetBytes(ptr, value.Length, buf, byteLen);
@@ -462,10 +462,10 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
         var byteLen = utf8.GetByteCount(value);
         if (byteLen > Length) return new DataRange(-1, 0);
 
-        const int Threshold = 128;
-        if (byteLen <= Threshold)
+        const int threshold = 128;
+        if (byteLen <= threshold)
         {
-            var buf = stackalloc byte[Threshold];
+            var buf = stackalloc byte[threshold];
             fixed (char* ptr = value)
             {
                 utf8.GetBytes(ptr, value.Length, buf, byteLen);
@@ -601,10 +601,10 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
         var byteLen = utf8.GetByteCount(right);
         if (byteLen != left.Length) return false;
 
-        const int Threshold = 128;
-        if (byteLen <= Threshold)
+        const int threshold = 128;
+        if (byteLen <= threshold)
         {
-            var buf = stackalloc byte[Threshold];
+            var buf = stackalloc byte[threshold];
             fixed (char* ptr = right)
             {
                 utf8.GetBytes(ptr, right.Length, buf, byteLen);

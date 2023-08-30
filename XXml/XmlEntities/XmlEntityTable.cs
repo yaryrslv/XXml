@@ -230,10 +230,10 @@ public readonly struct XmlEntityTable
     /// <param name="bufferToResolve">буфер, используемый при разрешении строки</param>
     /// <returns>байт длины разрешенной строки</returns>
     [SkipLocalsInit]
-    public unsafe int Resolve(RawString str, Span<byte> bufferToResolve)
+    private unsafe int Resolve(RawString str, Span<byte> bufferToResolve)
     {
-        const int ExBufLen = 5;
-        var exBuf = stackalloc byte[ExBufLen];
+        const int exBufLen = 5;
+        var exBuf = stackalloc byte[exBufLen];
 
         // Use pointer to avoid the overhead in case of SlowSpan runtime.
         fixed (byte* buf = bufferToResolve)
@@ -261,7 +261,7 @@ public readonly struct XmlEntityTable
                         var alias = str.SliceUnsafe(start, i - 1 - start);
                         if (TryGetValue(alias, out var value) == false)
                         {
-                            var tmp = SpanHelper.CreateSpan<byte>(exBuf, ExBufLen);
+                            var tmp = SpanHelper.CreateSpan<byte>(exBuf, exBufLen);
                             if (TryUnicodePointToUtf8(alias, tmp, out var byteLen) == false) throw new FormatException($"Could not resolve the entity: '&{alias};'");
                             value = tmp.Slice(0, byteLen);
                         }

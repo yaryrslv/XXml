@@ -7,7 +7,7 @@ namespace XXml.Tests
     {
         private const string DebugFile = "TicketsInsert.xml";
         private const string TestsDataFolder = "TestsData";
-        private string FilePath { get; set; } = Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?
+        private string? FilePath { get; set; } = Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?
             .FullName ?? string.Empty, TestsDataFolder, DebugFile);
         
         private readonly ITestOutputHelper _output;

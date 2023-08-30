@@ -48,9 +48,9 @@ public static class XmlParserUnsafe
     /// </summary>
     /// <param name="stream">stream to parse</param>
     /// <returns>xml object</returns>
-    public static XmlObjectUnsafe ParseUnsafe(Stream stream)
+    public static XmlObjectUnsafe ParseUnsafe(Stream? stream)
     {
-        var fileSizeHint = stream.CanSeek ? (int) stream.Length : 1024 * 1024;
+        var fileSizeHint = stream != null && stream.CanSeek ? (int) stream.Length : 1024 * 1024;
         return ParseUnsafe(stream, fileSizeHint);
     }
 
@@ -65,10 +65,10 @@ public static class XmlParserUnsafe
     /// <param name="stream">stream to parse</param>
     /// <param name="fileSizeHint">file size hint</param>
     /// <returns>xml object</returns>
-    public static XmlObjectUnsafe ParseUnsafe(Stream stream, int fileSizeHint)
+    private static XmlObjectUnsafe ParseUnsafe(Stream? stream, int fileSizeHint)
     {
         if (stream is null) ThrowHelper.ThrowNullArg(nameof(stream));
-        var (buf, length) = stream!.ReadAllToUnmanaged(fileSizeHint);
+        var (buf, length) = stream.ReadAllToUnmanaged(fileSizeHint);
         try
         {
             return XmlObjectUnsafe.Create(XmlParser.ParseCore(ref buf, length));
@@ -90,7 +90,7 @@ public static class XmlParserUnsafe
     /// </summary>
     /// <param name="filePath">file path to parse</param>
     /// <returns>xml object</returns>
-    public static XmlObjectUnsafe ParseFileUnsafe(string filePath)
+    public static XmlObjectUnsafe ParseFileUnsafe(string? filePath)
     {
         return XmlObjectUnsafe.Create(XmlParser.ParseFileCore(filePath, Encoding.UTF8));
     }
@@ -106,7 +106,7 @@ public static class XmlParserUnsafe
     /// <param name="filePath">file path to parse</param>
     /// <param name="encoding">encoding of the file</param>
     /// <returns>xml object</returns>
-    public static XmlObjectUnsafe ParseFileUnsafe(string filePath, Encoding encoding)
+    public static XmlObjectUnsafe ParseFileUnsafe(string? filePath, Encoding? encoding)
     {
         return XmlObjectUnsafe.Create(XmlParser.ParseFileCore(filePath, encoding));
     }

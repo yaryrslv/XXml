@@ -42,7 +42,7 @@ internal unsafe struct NodeStack : IDisposable
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XmlNodeStruct* Peek()
+    public readonly XmlNodeStruct* Peek()
     {
         if (Count == 0) ThrowHelper.ThrowInvalidOperation("Stack has no items.");
         return _ptr[Count - 1];

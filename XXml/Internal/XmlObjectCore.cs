@@ -5,7 +5,7 @@ using XXml.XmlEntities;
 
 namespace XXml.Internal;
 
-internal readonly unsafe struct XmlObjectCore : IDisposable, IXmlObject
+internal readonly unsafe struct XmlObjectCore : IXmlObject
 {
     private readonly IntPtr _rawByteData;
     private readonly int _byteLength;
@@ -53,7 +53,7 @@ internal readonly unsafe struct XmlObjectCore : IDisposable, IXmlObject
     {
         var offset = DataOffsetHelper.GetOffset((byte*) _rawByteData, _byteLength, node.NodeHeadPtr);
         if (offset.HasValue == false) ThrowHelper.ThrowArg("The node does not belong to the xml.");
-        return new DataRange(offset!.Value, node.NodeByteLen);
+        return new DataRange(offset.Value, node.NodeByteLen);
     }
 
     public DataRange GetRange(XmlAttribute attr)
@@ -61,21 +61,21 @@ internal readonly unsafe struct XmlObjectCore : IDisposable, IXmlObject
         var str = attr.AsRawString();
         var offset = DataOffsetHelper.GetOffset((byte*) _rawByteData, _byteLength, str.GetPtr());
         if (offset.HasValue == false) ThrowHelper.ThrowArg("The attribute does not belong to the xml.");
-        return new DataRange(offset!.Value, str.Length);
+        return new DataRange(offset.Value, str.Length);
     }
 
     public DataRange GetRange(RawString str)
     {
         var offset = DataOffsetHelper.GetOffset((byte*) _rawByteData, _byteLength, str.GetPtr());
         if (offset.HasValue == false) ThrowHelper.ThrowArg("The string does not belong to the xml.");
-        return new DataRange(offset!.Value, str.Length);
+        return new DataRange(offset.Value, str.Length);
     }
 
     public DataLocation GetLocation(XmlNode node)
     {
         var location = DataOffsetHelper.GetLocation((byte*) _rawByteData, _byteLength, node.NodeHeadPtr, node.NodeByteLen);
         if (location.HasValue == false) ThrowHelper.ThrowArg("The node does not belong to the xml.");
-        return location!.Value;
+        return location.Value;
     }
 
     public DataLocation GetLocation(XmlAttribute attr)
@@ -83,14 +83,14 @@ internal readonly unsafe struct XmlObjectCore : IDisposable, IXmlObject
         var str = attr.AsRawString();
         var location = DataOffsetHelper.GetLocation((byte*) _rawByteData, _byteLength, str.GetPtr(), str.Length);
         if (location.HasValue == false) ThrowHelper.ThrowArg("The attribute does not belong to the xml.");
-        return location!.Value;
+        return location.Value;
     }
 
     public DataLocation GetLocation(RawString str)
     {
         var location = DataOffsetHelper.GetLocation((byte*) _rawByteData, _byteLength, str.GetPtr(), str.Length);
         if (location.HasValue == false) ThrowHelper.ThrowArg("The string does not belong to the xml.");
-        return location!.Value;
+        return location.Value;
     }
 
     public DataLocation GetLocation(DataRange range)
@@ -98,10 +98,10 @@ internal readonly unsafe struct XmlObjectCore : IDisposable, IXmlObject
         var dataHead = (byte*) _rawByteData;
         var location = DataOffsetHelper.GetLocation(dataHead, _byteLength, dataHead + range.Start, range.Length);
         if (location.HasValue == false) ThrowHelper.ThrowArg("The range is out of the xml.");
-        return location!.Value;
+        return location.Value;
     }
 
-    /// <summary>Get whole xml string as utf-8 bytes data.</summary>
+    /// <summary>Получение целой xml строки в виде utf-8-байтовых данных.</summary>
     /// <returns>whole xml string</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public RawString AsRawString()
@@ -127,7 +127,7 @@ internal readonly unsafe struct XmlObjectCore : IDisposable, IXmlObject
         return AsRawString().Slice(range);
     }
 
-    /// <summary>Get all nodes (target type is <see cref="XmlNodeType.ElementNode" />)</summary>
+    /// <summary>Получение всех нод (целевой тип - <see cref="XmlNodeType.ElementNode" />)</summary>
     /// <returns>all element nodes</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AllNodeList GetAllNodes()
@@ -135,8 +135,8 @@ internal readonly unsafe struct XmlObjectCore : IDisposable, IXmlObject
         return _store.GetAllNodes(XmlNodeType.ElementNode);
     }
 
-    /// <summary>Get all nodes by specifying node type</summary>
-    /// <param name="targetType">node type</param>
+    /// <summary>Получение всех нод по заданному типу ноды</summary>
+    /// <param name="targetType">тип узла</param>
     /// <returns>all nodes</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AllNodeList GetAllNodes(XmlNodeType? targetType)
@@ -151,14 +151,14 @@ internal unsafe struct NodeStore : IDisposable
     private CustomList<XmlAttributeStruct> _allAttrs;
 
     // [NOTE]
-    // Don't add a node from this property directly.
+    // Не добавляйте ноду из этого свойства напрямую.
     public CustomList<XmlNodeStruct> AllNodes => _allNodes;
 
     public CustomList<XmlAttributeStruct> AllAttrs => _allAttrs;
     public int NodeCount => _allNodes.Count;
-    public int ElementNodeCount { get; private set; }
+    private int ElementNodeCount { get; set; }
 
-    public int TextNodeCount => _allNodes.Count - ElementNodeCount;
+    private int TextNodeCount => _allNodes.Count - ElementNodeCount;
 
     public XmlNode RootNode => new(_allNodes.FirstItem);
 
@@ -217,7 +217,7 @@ internal unsafe struct NodeStore : IDisposable
         return _allNodes.GetEnumerator();
     }
 
-    public void Dispose()
+    public readonly void Dispose()
     {
         _allNodes.Dispose();
         _allAttrs.Dispose();

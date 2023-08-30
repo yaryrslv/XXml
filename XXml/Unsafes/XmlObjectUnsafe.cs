@@ -13,7 +13,7 @@ namespace XXml.Unsafes;
 ///     <para />
 ///     Вы ДОЛЖНЫ задиспозить его после использования. Он совместим с <see cref="XmlObject" />
 /// </summary>
-public readonly unsafe struct XmlObjectUnsafe : IDisposable, IXmlObject
+public readonly unsafe struct XmlObjectUnsafe : IXmlObject
 {
     private readonly IntPtr _core; // XmlObjectCore*
 

@@ -13,7 +13,7 @@ unsafe partial struct RawString
     private const string InvalidFormatMessage = "Invalid format";
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void ToUpper(Span<byte> buffer)
+    private void ToUpper(Span<byte> buffer)
     {
         if (buffer.Length < Length) ThrowHelper.ThrowArg("buffer is too short.");
 
@@ -35,7 +35,7 @@ unsafe partial struct RawString
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void ToLower(Span<byte> buffer)
+    private void ToLower(Span<byte> buffer)
     {
         if (buffer.Length < Length) ThrowHelper.ThrowArg("buffer is too short.");
 

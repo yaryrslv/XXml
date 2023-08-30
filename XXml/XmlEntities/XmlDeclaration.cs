@@ -44,6 +44,16 @@ public readonly unsafe struct XmlDeclaration : IEquatable<XmlDeclaration>, IRefe
     {
         return _declaration != null ? _declaration->Body.ToString() : "";
     }
+
+    public static bool operator ==(XmlDeclaration left, XmlDeclaration right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(XmlDeclaration left, XmlDeclaration right)
+    {
+        return !(left == right);
+    }
 }
 
 internal unsafe struct XmlDeclarationType

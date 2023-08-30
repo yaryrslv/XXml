@@ -50,7 +50,7 @@ public static class XmlAttributeEnumerableExtension
         return Option<XmlAttribute>.Null;
     }
 
-    public static Option<XmlAttribute> FindOrDefault<TAttributes>(this TAttributes source, ReadOnlySpan<byte> namespaceName, ReadOnlySpan<byte> name) where TAttributes : IEnumerable<XmlAttribute>
+    private static Option<XmlAttribute> FindOrDefault<TAttributes>(this TAttributes source, ReadOnlySpan<byte> namespaceName, ReadOnlySpan<byte> name) where TAttributes : IEnumerable<XmlAttribute>
     {
         if (typeof(TAttributes) == typeof(XmlAttributeList)) return Unsafe.As<TAttributes, XmlAttributeList>(ref source).FindOrDefault(namespaceName, name);
 
@@ -106,10 +106,10 @@ public static class XmlAttributeEnumerableExtension
         var utf8 = Utf8ExceptionFallbackEncoding.Instance;
         var byteLen = utf8.GetByteCount(name);
 
-        const int Threshold = 128;
-        if (byteLen <= Threshold)
+        const int threshold = 128;
+        if (byteLen <= threshold)
         {
-            var buf = stackalloc byte[Threshold];
+            var buf = stackalloc byte[threshold];
             fixed (char* ptr = name)
             {
                 utf8.GetBytes(ptr, name.Length, buf, byteLen);
@@ -157,10 +157,10 @@ public static class XmlAttributeEnumerableExtension
         var nameByteLen = utf8.GetByteCount(name);
         var byteLen = nsNameByteLen + nameByteLen;
 
-        const int Threshold = 128;
-        if (byteLen <= Threshold)
+        const int threshold = 128;
+        if (byteLen <= threshold)
         {
-            var buf = stackalloc byte[Threshold];
+            var buf = stackalloc byte[threshold];
             fixed (char* ptr = namespaceName)
             {
                 utf8.GetBytes(ptr, namespaceName.Length, buf, nsNameByteLen);

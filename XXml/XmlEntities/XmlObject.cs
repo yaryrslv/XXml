@@ -10,7 +10,7 @@ namespace XXml.XmlEntities;
 ///     <see cref="IsDisposed" />.
 ///     <see cref="Dispose" />.
 /// </remarks>
-public sealed class XmlObject : IDisposable, IXmlObject
+public sealed class XmlObject : IXmlObject
 {
     private readonly XmlObjectCore _core;
 

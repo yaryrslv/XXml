@@ -46,6 +46,16 @@ public readonly unsafe struct XmlDocumentType : IEquatable<XmlDocumentType>, IRe
     {
         return AsRawString().ToString();
     }
+
+    public static bool operator ==(XmlDocumentType left, XmlDocumentType right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(XmlDocumentType left, XmlDocumentType right)
+    {
+        return !(left == right);
+    }
 }
 
 internal struct XmlDocumentTypeCustom

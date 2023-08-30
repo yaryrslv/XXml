@@ -27,7 +27,7 @@ public readonly ref struct SplitRawStrings
         _spanSeparator = separator;
     }
 
-    public IEnumerable<RawString> AsEnumerable()
+    private IEnumerable<RawString> AsEnumerable()
     {
         var list = new List<RawString>();
         foreach (var s in this) list.Add(s);

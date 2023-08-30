@@ -14,7 +14,7 @@ namespace XXml.Internal;
 
 internal static class StreamExtension
 {
-    public static (UnmanagedBuffer buffer, int length) ReadAllToUnmanaged(this Stream stream, int fileSizeHint)
+    public static (UnmanagedBuffer buffer, int length) ReadAllToUnmanaged(this Stream? stream, int fileSizeHint)
     {
         var capacity = Math.Min(int.MaxValue, Math.Max(0, fileSizeHint)); // 0 <= capacity <= int.MaxValue
 
@@ -25,10 +25,10 @@ internal static class StreamExtension
         {
             while (true)
             {
-                const int LengthToRead = 4096;
-                if (buf.Length < length + LengthToRead)
+                const int lengthToRead = 4096;
+                if (buf.Length < length + lengthToRead)
                 {
-                    var tmp = new UnmanagedBuffer(checked(length + LengthToRead));
+                    var tmp = new UnmanagedBuffer(checked(length + lengthToRead));
                     buf.AsSpan(0, length).CopyTo(tmp.AsSpan());
                     buf.Dispose();
                     buf = tmp;
@@ -97,7 +97,7 @@ internal static class StreamExtension
 
 internal static class FileHelper
 {
-    public static (UnmanagedBuffer buffer, int length) ReadFileToUnmanaged(string filePath)
+    public static (UnmanagedBuffer buffer, int length) ReadFileToUnmanaged(string? filePath)
     {
 #if NET6_0_OR_GREATER
         UnmanagedBuffer buffer = default;

@@ -11,7 +11,7 @@ namespace XXml.XmlEntities;
 /// .
 [DebuggerDisplay("XmlAttribute[{Count}]")]
 [DebuggerTypeProxy(typeof(XmlAttributeListTypeProxy))]
-public readonly unsafe struct XmlAttributeList : IEnumerable<XmlAttribute>, ICollection<XmlAttribute>
+public readonly unsafe struct XmlAttributeList : ICollection<XmlAttribute>
 {
     private readonly IntPtr _node; // XmlNodeStruct*
 
@@ -37,7 +37,7 @@ public readonly unsafe struct XmlAttributeList : IEnumerable<XmlAttribute>, ICol
         return new XmlAttribute(List.At(StartIndex));
     }
 
-    public XmlAttribute First(Func<XmlAttribute, bool> predicate)
+    public XmlAttribute First(Func<XmlAttribute, bool>? predicate)
     {
         if (FirstOrDefault(predicate).TryGetValue(out var attr) == false) ThrowHelper.ThrowInvalidOperation("Sequence contains no matching elements.");
         return attr;
@@ -48,13 +48,12 @@ public readonly unsafe struct XmlAttributeList : IEnumerable<XmlAttribute>, ICol
         return Count == 0 ? default : new XmlAttribute(List.At(StartIndex));
     }
 
-    public Option<XmlAttribute> FirstOrDefault(Func<XmlAttribute, bool> predicate)
+    private Option<XmlAttribute> FirstOrDefault(Func<XmlAttribute, bool>? predicate)
     {
         if (predicate is null) ThrowHelper.ThrowNullArg(nameof(predicate));
 
-        foreach (var attr in this)
-            if (predicate!(attr))
-                return attr;
+        foreach (var attr in this.Where(predicate))
+            return attr;
 
         return default;
     }

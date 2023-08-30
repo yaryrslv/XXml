@@ -28,23 +28,23 @@ public readonly unsafe struct AllNodeList : IEnumerable<XmlNode>
         return node;
     }
 
-    public Option<XmlNode> FirstOrDefault()
+    private Option<XmlNode> FirstOrDefault()
     {
         using var e = GetEnumerator();
         if (e.MoveNext() == false) return Option<XmlNode>.Null;
         return e.Current;
     }
 
-    public XmlNode First(Func<XmlNode, bool> predicate)
+    public XmlNode First(Func<XmlNode, bool>? predicate)
     {
         if (FirstOrDefault(predicate).TryGetValue(out var node) == false) ThrowHelper.ThrowInvalidOperation("Sequence contains no matching elements.");
         return node;
     }
 
-    private Option<XmlNode> FirstOrDefault(Func<XmlNode, bool> predicate)
+    private Option<XmlNode> FirstOrDefault(Func<XmlNode, bool>? predicate)
     {
         if (predicate is null) ThrowHelper.ThrowNullArg(nameof(predicate));
-        foreach (var node in this.Where(node => predicate!(node))) return node;
+        foreach (var node in this.Where(predicate)) return node;
         return Option<XmlNode>.Null;
     }
 
