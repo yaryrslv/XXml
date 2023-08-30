@@ -18,7 +18,7 @@ namespace XXml.Tests
         }
         
         [Fact]
-        public void XXml_XmlParser_File()
+        public void XXml_XmlParser_GetAllNodes()
         {
             var xml = XmlParser.ParseFile(FilePath);
             var list = xml.GetAllNodes(XmlNodeType.ElementNode).Where(x => x.Name == "Rec");
@@ -28,7 +28,7 @@ namespace XXml.Tests
                 {
                     _output.WriteLine(attribute.Name + ": " + attribute.Value);
                 }
-                _output.WriteLine("========================================");
+                _output.WriteLine(new string('=', 8));
             }
             Assert.NotNull(list);
             Assert.Equal(96786, list.Count());
