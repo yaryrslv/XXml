@@ -31,7 +31,8 @@ public readonly unsafe struct XmlNode : IEquatable<XmlNode>, IReference
     /// <summary>Получить тип ноды</summary>
     public XmlNodeType NodeType => ((XmlNodeStruct*) _node)->NodeType;
 
-    /// <summary>Получение информации о том, является ли нода null. (Действительные узлы всегда возвращают false.)</summary>.
+    /// <summary>Получение информации о том, является ли нода null. (Действительные узлы всегда возвращают false.)</summary>
+    /// .
     public bool IsNull => _node == IntPtr.Zero;
 
     /// <summary>Получить имя ноды.</summary>
@@ -52,10 +53,12 @@ public readonly unsafe struct XmlNode : IEquatable<XmlNode>, IReference
     /// <summary>Get children of <see cref="XmlNodeType.ElementNode" />. (То же самое, что и <see cref="Children" /> свойство.)</summary>
     public XmlNodeList Children => new((XmlNodeStruct*) _node, XmlNodeType.ElementNode);
 
-    /// <summary>Получение всех дочерних нод <see cref="XmlNodeType.ElementNode" /> способом глубинного поиска.</summary>.
+    /// <summary>Получение всех дочерних нод <see cref="XmlNodeType.ElementNode" /> способом глубинного поиска.</summary>
+    /// .
     public XmlNodeDescendantList Descendants => new((XmlNodeStruct*) _node, XmlNodeType.ElementNode);
 
-    /// <summary>Получение глубины ноды в xml. (Корневая нода равена 0.)</summary>.
+    /// <summary>Получение глубины ноды в xml. (Корневая нода равена 0.)</summary>
+    /// .
     public int Depth => ((XmlNodeStruct*) _node)->Depth;
 
     /// <summary>Получение информации о том, является ли данная нода корневой.</summary>
@@ -83,7 +86,8 @@ public readonly unsafe struct XmlNode : IEquatable<XmlNode>, IReference
 
     /// <summary>Получение дочерних нод по указанию типа ноды.</summary>
     /// <param name="targetType">целевой тип xml ноды. (Если задано null, возвращаются все типы нод.)</param>
-    /// <returns>child nodes</returns>.
+    /// <returns>child nodes</returns>
+    /// .
     public XmlNodeList GetChildren(XmlNodeType? targetType)
     {
         return new XmlNodeList((XmlNodeStruct*) _node, targetType);
@@ -99,7 +103,8 @@ public readonly unsafe struct XmlNode : IEquatable<XmlNode>, IReference
 
     /// <summary>Получение строки, которую представляет данная нода в виде <see cref="RawString" />.</summary>
     /// <remarks>Отступ ноды в начале игнорируется.</remarks>
-    /// <returns><see cref="RawString" /> данный узел представляет собой</returns>.
+    /// <returns><see cref="RawString" /> данный узел представляет собой</returns>
+    /// .
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public RawString AsRawString()
     {
@@ -134,10 +139,7 @@ public readonly unsafe struct XmlNode : IEquatable<XmlNode>, IReference
     {
         if (namespaceName.IsEmpty || name.IsEmpty) return false;
         if (XmlnsHelper.TryResolveNamespaceAlias(namespaceName, this, out var alias) == false) return false;
-        if (alias.IsEmpty)
-        {
-            return Name == name;
-        }
+        if (alias.IsEmpty) return Name == name;
 
         var nodeName = Name;
         return nodeName.Length == alias.Length + 1 + name.Length
@@ -319,7 +321,8 @@ public readonly unsafe struct XmlNode : IEquatable<XmlNode>, IReference
     }
 
     /// <summary>
-    /// Находит потомка по имени. Возвращает первого найденного потомка или кидает <see cref="InvalidOperationException" />, если он не найден.
+    ///     Находит потомка по имени. Возвращает первого найденного потомка или кидает <see cref="InvalidOperationException" />
+    ///     , если он не найден.
     /// </summary>
     /// <param name="name">имя потомка для поиска</param>
     /// <returns> найденная дочерняя нода</returns>
@@ -330,7 +333,8 @@ public readonly unsafe struct XmlNode : IEquatable<XmlNode>, IReference
     }
 
     /// <summary>
-    /// Находит потомка по имени. Возвращает первого найденного потомка или кидает <see cref="InvalidOperationException" />, если он не найден.
+    ///     Находит потомка по имени. Возвращает первого найденного потомка или кидает <see cref="InvalidOperationException" />
+    ///     , если он не найден.
     /// </summary>
     /// <param name="name">имя потомка для поиска</param>
     /// <returns> найденная дочерняя нода</returns>
@@ -367,7 +371,8 @@ public readonly unsafe struct XmlNode : IEquatable<XmlNode>, IReference
     }
 
     /// <summary>
-    /// Находит потомка по имени. Возвращает первого найденного потомка или кидает <see cref="InvalidOperationException" />, если он не найден.
+    ///     Находит потомка по имени. Возвращает первого найденного потомка или кидает <see cref="InvalidOperationException" />
+    ///     , если он не найден.
     /// </summary>
     /// <param name="name">имя потомка для поиска</param>
     /// <returns> найденная дочерняя нода</returns>
@@ -378,7 +383,8 @@ public readonly unsafe struct XmlNode : IEquatable<XmlNode>, IReference
     }
 
     /// <summary>
-    /// Находит потомка по имени. Возвращает первого найденного потомка или кидает <see cref="InvalidOperationException" />, если он не найден.
+    ///     Находит потомка по имени. Возвращает первого найденного потомка или кидает <see cref="InvalidOperationException" />
+    ///     , если он не найден.
     /// </summary>
     /// <param name="name">имя потомка для поиска</param>
     /// <returns> найденная дочерняя нода</returns>
@@ -704,18 +710,19 @@ public readonly unsafe struct XmlNode : IEquatable<XmlNode>, IReference
 
     /// <summary>Получение полного имени ноды. Возвращает false, если полное имя не может быть зарезовлено.</summary>
     /// <param name="namespaceName">
-    /// имя пространства имен ноды.
-    /// <para />
-    /// например, "abcde" в случае, если узел нода вид &lt;a:foo xmlns:a="abcde" /&gt;
-    /// <para />
+    ///     имя пространства имен ноды.
+    ///     <para />
+    ///     например, "abcde" в случае, если узел нода вид &lt;a:foo xmlns:a="abcde" /&gt;
+    ///     <para />
     /// </param>
     /// <param name="name">
-    /// локальное имя ноды
-    /// <para />
-    /// например, "foo" в случае, когда нода имеет вид &lt;a:foo xmlns:a="abcde" /&gt;
-    /// <para />
+    ///     локальное имя ноды
+    ///     <para />
+    ///     например, "foo" в случае, когда нода имеет вид &lt;a:foo xmlns:a="abcde" /&gt;
+    ///     <para />
     /// </param>
-    /// <returns>Возможно ли разрешить полное имя ноды</returns>.
+    /// <returns>Возможно ли разрешить полное имя ноды</returns>
+    /// .
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGetFullName(out RawString namespaceName, out RawString name)
     {
@@ -723,14 +730,16 @@ public readonly unsafe struct XmlNode : IEquatable<XmlNode>, IReference
     }
 
     /// <summary>
-    /// Получение полного имени ноды. Метод выбрасывает <see cref="InvalidOperationException" />, если полное имя не удаллось зарезолвить.
-    /// не разрешено.
+    ///     Получение полного имени ноды. Метод выбрасывает <see cref="InvalidOperationException" />, если полное имя не
+    ///     удаллось зарезолвить.
+    ///     не разрешено.
     /// </summary>
     /// <remarks>
-    /// ex) Возвращает ("abcde", "foo") в случае, если нода является &lt;a:foo xmlns:a="abcde" /&gt;
-    /// <para />
+    ///     ex) Возвращает ("abcde", "foo") в случае, если нода является &lt;a:foo xmlns:a="abcde" /&gt;
+    ///     <para />
     /// </remarks>
-    /// <exception cref="InvalidOperationException">полное имя не удалось разрешить</exception>.
+    /// <exception cref="InvalidOperationException">полное имя не удалось разрешить</exception>
+    /// .
     /// <returns>Пара из имени пространства имен и локального имени</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (RawString NamespaceName, RawString Name) GetFullName()
@@ -777,7 +786,8 @@ public readonly unsafe struct XmlNode : IEquatable<XmlNode>, IReference
     /// <summary>Возвращает true, если оба <see cref="XmlNode" />одинаковых объекта.</summary>
     /// <param name="left">левый операнд</param>
     /// <param name="right">правый операнд</param>
-    /// <returns>true, если оба <see cref="XmlNode" />s являются одинаковыми объектами</returns>.
+    /// <returns>true, если оба <see cref="XmlNode" />s являются одинаковыми объектами</returns>
+    /// .
     public static bool operator ==(XmlNode left, XmlNode right)
     {
         return left.Equals(right);
@@ -786,7 +796,8 @@ public readonly unsafe struct XmlNode : IEquatable<XmlNode>, IReference
     /// <summary>Возвращает true, если оба <see cref="XmlNode" />не являются одинаковыми объектами.</summary>
     /// <param name="left">левый операнд</param>
     /// <param name="right">правый операнд</param>
-    /// <returns>true, если оба <see cref="XmlNode" />не являются одинаковыми объектами</returns>.
+    /// <returns>true, если оба <see cref="XmlNode" />не являются одинаковыми объектами</returns>
+    /// .
     public static bool operator !=(XmlNode left, XmlNode right)
     {
         return !(left == right);

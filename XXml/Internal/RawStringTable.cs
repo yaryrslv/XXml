@@ -40,7 +40,8 @@ internal readonly unsafe struct RawStringTable : IDisposable, IReference
         _table = (IntPtr) table;
     }
 
-    /// <summary>Добавляет key value пару. Возвращает false, если key уже зарегистрирован.</summary>.
+    /// <summary>Добавляет key value пару. Возвращает false, если key уже зарегистрирован.</summary>
+    /// .
     /// <param name="key">key to add. (Must not be empty)</param>
     /// <param name="value">value to add</param>
     /// <returns>true if success</returns>

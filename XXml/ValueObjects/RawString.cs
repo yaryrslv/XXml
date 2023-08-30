@@ -7,7 +7,8 @@ using XXml.Internal;
 namespace XXml.ValueObjects;
 
 /// <summary>
-/// Предоставляет необработанный байтовый массив utf8, который совместим <see cref="ReadOnlySpan{T}" /> из <see langword="byte" />
+///     Предоставляет необработанный байтовый массив utf8, который совместим <see cref="ReadOnlySpan{T}" /> из
+///     <see langword="byte" />
 /// </summary>
 [DebuggerTypeProxy(typeof(RawStringDebuggerTypeProxy))]
 [DebuggerDisplay("{ToString()}")]
@@ -24,7 +25,8 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
     /// <summary>Получение длины байтового массива. (НЕ количество символов)</summary>
     public int Length { get; }
 
-    /// <summary>Получение указателя на начлао набора символов utf-8.</summary>.
+    /// <summary>Получение указателя на начлао набора символов utf-8.</summary>
+    /// .
     public IntPtr Ptr => _ptr;
 
     /// <summary>Получение или установка элемента с указанным индексом</summary>
@@ -55,7 +57,8 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
         return Length == 0 ? 0 : Utf8ExceptionFallbackEncoding.Instance.GetCharCount((byte*) _ptr, Length);
     }
 
-    /// <summary>Получение данных байтов только для чтения</summary>.
+    /// <summary>Получение данных байтов только для чтения</summary>
+    /// .
     /// <returns><see cref="ReadOnlySpan{T}" /> of type <see langword="byte" /></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySpan<byte> AsSpan()
@@ -70,7 +73,8 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
         return AsSpan().ToArray();
     }
 
-    /// <summary>Получение фрагмента <see cref="RawString" /></summary>.
+    /// <summary>Получение фрагмента <see cref="RawString" /></summary>
+    /// .
     /// <param name="start">начальный индекс фрагмента</param>
     /// <returns>sliced <see cref="RawString" /></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -80,9 +84,11 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
         return new RawString((byte*) _ptr + start, Length - start);
     }
 
-    /// <summary>Получение фрагмента <see cref="RawString" /></summary>.
+    /// <summary>Получение фрагмента <see cref="RawString" /></summary>
+    /// .
     /// <param name="start">начальный индекс фрагмента</param>
-    /// <param name="length">длина фрагмента от <paramref name="start" /></param>.
+    /// <param name="length">длина фрагмента от <paramref name="start" /></param>
+    /// .
     /// <returns>sliced <see cref="RawString" /></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public RawString Slice(int start, int length)
@@ -92,7 +98,8 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
         return new RawString((byte*) _ptr + start, length);
     }
 
-    /// <summary>Получение фрагмента <see cref="RawString" /></summary>.
+    /// <summary>Получение фрагмента <see cref="RawString" /></summary>
+    /// .
     /// <param name="range">диапазон данных</param>
     /// <returns>sliced <see cref="RawString" /></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -157,7 +164,8 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
     /// <summary>Получение фрагмента массива</summary>
     /// <remarks>[ВНИМАНИЕ] Граница не проверяется. Будьте осторожны !</remarks>
     /// <param name="start">начальный индекс фрагмента</param>
-    /// <param name="length">длина отрезка от <paramref name="start" /></param>.
+    /// <param name="length">длина отрезка от <paramref name="start" /></param>
+    /// .
     /// <returns>sliced array</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal RawString SliceUnsafe(int start, int length)
@@ -177,7 +185,8 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
         return ref Unsafe.AsRef<byte>((void*) _ptr);
     }
 
-    /// <summary>Декодирование байтового массива в формат utf-8 и получение <see langword="string" /></summary>.
+    /// <summary>Декодирование байтового массива в формат utf-8 и получение <see langword="string" /></summary>
+    /// .
     /// <returns>decoded string</returns>
     public override string ToString()
     {
@@ -515,9 +524,11 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
     }
 
 
-    /// <summary>Вычисление хэш-кода для указанного span по тому же алгоритму, что и <see cref="GetHashCode()" />.</summary>.
+    /// <summary>Вычисление хэш-кода для указанного span по тому же алгоритму, что и <see cref="GetHashCode()" />.</summary>
+    /// .
     /// <param name="utf8String">span для вычисления хэш-кода</param>
-    /// <returns>hash code</returns>.
+    /// <returns>hash code</returns>
+    /// .
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int GetHashCode(ReadOnlySpan<byte> utf8String)
     {
@@ -527,7 +538,8 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
         }
     }
 
-    /// <summary>Вычисление хэш-кода для указанного span по тому же алгоритму, что и <see cref="GetHashCode()" />.</summary>.
+    /// <summary>Вычисление хэш-кода для указанного span по тому же алгоритму, что и <see cref="GetHashCode()" />.</summary>
+    /// .
     /// <param name="ptr">указатель на байтовую головку span</param>
     /// <param name="length">длина байтового отрезка</param>
     /// <returns>hash code</returns>

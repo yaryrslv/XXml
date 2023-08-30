@@ -65,7 +65,8 @@ public static unsafe class XmlParser
 
     /// <summary>Парсинг xml-файла в кодировке UTF8 (как с BOM, так и без него).</summary>
     /// <param name="stream">поток для чтения</param>
-    /// <param name="fileSizeHint">подсказка размера файла, которая используется для оптимизации памяти</param>.
+    /// <param name="fileSizeHint">подсказка размера файла, которая используется для оптимизации памяти</param>
+    /// .
     /// <returns>xml объект</returns>
     public static XmlObject Parse(Stream stream, int fileSizeHint)
     {
@@ -306,7 +307,6 @@ public static unsafe class XmlParser
             }
         }
 
-        InnerText:
         {
             var nodeStrStart = i;
             var nodeStrPtr = data.GetPtr() + nodeStrStart;

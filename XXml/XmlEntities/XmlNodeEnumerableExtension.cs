@@ -5,11 +5,12 @@ using XXml.ValueObjects;
 
 namespace XXml.XmlEntities;
 
-/// <summary>Расширения для перечисления <see cref="XmlNode" />.</summary>.
+/// <summary>Расширения для перечисления <see cref="XmlNode" />.</summary>
+/// .
 public static class XmlNodeEnumerableExtension
 {
     private const string NoMatchingMessage = "Sequence contains no matching elements.";
-    
+
     /// <summary>Найти ноду по имени. Возвращает первый найденный узел.</summary>
     /// <param name="source">список исходных узлов для перечисления</param>
     /// <param name="name">имя узла для поиска</param>
@@ -191,7 +192,8 @@ public static class XmlNodeEnumerableExtension
     }
 
     /// <summary>
-    /// Находит ноду по имени. Возвращает первый найденный узел или бросает <see cref="InvalidOperationException" />, если он не найден.
+    ///     Находит ноду по имени. Возвращает первый найденный узел или бросает <see cref="InvalidOperationException" />, если
+    ///     он не найден.
     /// </summary>
     /// <param name="source">список исходных узлов для перечисления</param>
     /// <param name="name">имя узла для поиска</param>
@@ -204,7 +206,8 @@ public static class XmlNodeEnumerableExtension
     }
 
     /// <summary>
-    /// Находит ноду по имени. Возвращает первый найденный узел или бросает <see cref="InvalidOperationException" />, если он не найден.
+    ///     Находит ноду по имени. Возвращает первый найденный узел или бросает <see cref="InvalidOperationException" />, если
+    ///     он не найден.
     /// </summary>
     /// <param name="source">список исходных узлов для перечисления</param>
     /// <param name="name">имя узла для поиска</param>
@@ -217,7 +220,8 @@ public static class XmlNodeEnumerableExtension
     }
 
     /// <summary>
-    /// Находит ноду по имени. Возвращает первый найденный узел или бросает <see cref="InvalidOperationException" />, если он не найден.
+    ///     Находит ноду по имени. Возвращает первый найденный узел или бросает <see cref="InvalidOperationException" />, если
+    ///     он не найден.
     /// </summary>
     /// <param name="source">список исходных узлов для перечисления</param>
     /// <param name="name">имя узла для поиска</param>
@@ -230,7 +234,8 @@ public static class XmlNodeEnumerableExtension
     }
 
     /// <summary>
-    /// Находит ноду по имени. Возвращает первый найденный узел или бросает <see cref="InvalidOperationException" />, если он не найден.
+    ///     Находит ноду по имени. Возвращает первый найденный узел или бросает <see cref="InvalidOperationException" />, если
+    ///     он не найден.
     /// </summary>
     /// <param name="source">список исходных узлов для перечисления</param>
     /// <param name="name">имя узла для поиска</param>

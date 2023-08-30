@@ -4,14 +4,17 @@ using XXml.Internal;
 
 namespace XXml.ValueObjects;
 
-/// <summary>Представляет местоположение данных</summary>.
+/// <summary>Представляет местоположение данных</summary>
+/// .
 [DebuggerDisplay("{DebugView,nq}")]
 public readonly struct DataLocation : IEquatable<DataLocation>
 {
-    /// <summary>Номер начальной строки и номер символа данных</summary>.
+    /// <summary>Номер начальной строки и номер символа данных</summary>
+    /// .
     public readonly DataLinePosition Start;
 
-    /// <summary>Номер конечной строки и номер символа данных</summary>.
+    /// <summary>Номер конечной строки и номер символа данных</summary>
+    /// .
     public readonly DataLinePosition End;
 
     /// <summary>Диапазон данных в байтах</summary>
@@ -80,7 +83,8 @@ public readonly struct DataLocation : IEquatable<DataLocation>
     }
 }
 
-/// <summary>Представляет номер строки и номер символа данных</summary>.
+/// <summary>Представляет номер строки и номер символа данных</summary>
+/// .
 [DebuggerDisplay("{DebugView,nq}")]
 public readonly struct DataLinePosition : IEquatable<DataLinePosition>
 {

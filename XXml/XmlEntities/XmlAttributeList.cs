@@ -7,7 +7,8 @@ using XXml.ValueObjects;
 
 namespace XXml.XmlEntities;
 
-/// <summary>Предоставляет список <see cref="XmlAttribute" /></summary>.
+/// <summary>Предоставляет список <see cref="XmlAttribute" /></summary>
+/// .
 [DebuggerDisplay("XmlAttribute[{Count}]")]
 [DebuggerTypeProxy(typeof(XmlAttributeListTypeProxy))]
 public readonly unsafe struct XmlAttributeList : IEnumerable<XmlAttribute>, ICollection<XmlAttribute>
@@ -49,18 +50,11 @@ public readonly unsafe struct XmlAttributeList : IEnumerable<XmlAttribute>, ICol
 
     public Option<XmlAttribute> FirstOrDefault(Func<XmlAttribute, bool> predicate)
     {
-        if (predicate is null)
-        {
-            ThrowHelper.ThrowNullArg(nameof(predicate));
-        }
+        if (predicate is null) ThrowHelper.ThrowNullArg(nameof(predicate));
 
         foreach (var attr in this)
-        {
             if (predicate!(attr))
-            {
                 return attr;
-            }
-        }
 
         return default;
     }

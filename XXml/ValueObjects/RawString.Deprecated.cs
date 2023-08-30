@@ -14,7 +14,10 @@ partial struct RawString
         return StartsWith(other);
     }
 
-    /// <summary>Используйте <see cref="StartsWith(ReadOnlySpan{byte})" /> вместо этого. (Правильное название метода - Start**s**With)</summary>
+    /// <summary>
+    ///     Используйте <see cref="StartsWith(ReadOnlySpan{byte})" /> вместо этого. (Правильное название метода -
+    ///     Start**s**With)
+    /// </summary>
     /// <param name="other"></param>
     /// <returns></returns>
     [Obsolete("Вместо этого используйте RawString.StartsWith. (Имя метода - Start*s*With)")]

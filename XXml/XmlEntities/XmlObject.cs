@@ -6,8 +6,9 @@ namespace XXml.XmlEntities;
 
 /// <summary>Xml-структурный объект, разобранный из xml-файла.</summary>
 /// <remarks>
-/// [ВНИМАНИЕ] После вызова <see cref="IsDisposed" /> НЕЛЬЗЯ вызывать никаких методов или свойств, кроме <see cref="IsDisposed" />.
-/// <see cref="Dispose" />.
+///     [ВНИМАНИЕ] После вызова <see cref="IsDisposed" /> НЕЛЬЗЯ вызывать никаких методов или свойств, кроме
+///     <see cref="IsDisposed" />.
+///     <see cref="Dispose" />.
 /// </remarks>
 public sealed class XmlObject : IDisposable, IXmlObject
 {
@@ -35,7 +36,8 @@ public sealed class XmlObject : IDisposable, IXmlObject
     /// <summary>Получение декларации xml</summary>
     public Option<XmlDeclaration> Declaration => _core.Declaration;
 
-    /// <summary>Получение объявления типа xml-документа</summary>.
+    /// <summary>Получение объявления типа xml-документа</summary>
+    /// .
     public Option<XmlDocumentType> DocumentType => _core.DocumentType;
 
     /// <summary>Получение таблицы xml-сущностей</summary>

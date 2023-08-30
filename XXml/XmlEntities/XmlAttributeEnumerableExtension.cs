@@ -5,7 +5,8 @@ using XXml.ValueObjects;
 
 namespace XXml.XmlEntities;
 
-/// <summary>Расширения для перечисления <see cref="XmlAttribute" />.</summary>.
+/// <summary>Расширения для перечисления <see cref="XmlAttribute" />.</summary>
+/// .
 public static class XmlAttributeEnumerableExtension
 {
     private const string NoMatchingMessage = "Sequence contains no matching elements.";
@@ -273,7 +274,7 @@ public static class XmlAttributeEnumerableExtension
         if (FindOrDefault(source, name).TryGetValue(out var attr) == false) ThrowHelper.ThrowInvalidOperation(NoMatchingMessage);
         return attr;
     }
-    
+
     /// <summary>Находит атрибут по имени. Возвращает первый найденный атрибут.</summary>
     /// <param name="source">список источников для перечисления</param>
     /// <param name="name">имя атрибута для поиска</param>

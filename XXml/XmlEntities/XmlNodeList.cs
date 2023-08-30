@@ -59,15 +59,9 @@ public readonly unsafe struct XmlNodeList : IEnumerable<XmlNode>, ICollection<Xm
 
     public Option<XmlNode> FirstOrDefault(Func<XmlNode, bool> predicate)
     {
-        if (predicate is null)
-        {
-            ThrowHelper.ThrowNullArg(nameof(predicate));
-        }
+        if (predicate is null) ThrowHelper.ThrowNullArg(nameof(predicate));
 
-        foreach (var node in this.Where(node => predicate!(node)))
-        {
-            return node;
-        }
+        foreach (var node in this.Where(node => predicate!(node))) return node;
 
         return Option<XmlNode>.Null;
     }

@@ -4,7 +4,8 @@ using System.Runtime.InteropServices;
 
 namespace XXml.Internal;
 
-/// <summary>Неуправляемый буфер памяти типа <see langword="byte" /></summary>.
+/// <summary>Неуправляемый буфер памяти типа <see langword="byte" /></summary>
+/// .
 [DebuggerTypeProxy(typeof(UnmanagedBufferDebuggerTypeProxy))]
 [DebuggerDisplay("byte[{Length}]")]
 internal readonly unsafe struct UnmanagedBuffer : IDisposable

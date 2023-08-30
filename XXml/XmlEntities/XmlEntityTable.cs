@@ -18,7 +18,8 @@ public readonly struct XmlEntityTable
 
     /// <summary>Проверка необходимости разрешения входной строки.</summary>
     /// <param name="str">строка для проверки</param>
-    /// <param name="requiredBufferLength">длина байта, необходимая для разрешения</param>.
+    /// <param name="requiredBufferLength">длина байта, необходимая для разрешения</param>
+    /// .
     /// <returns>состояние чекера</returns>
     public unsafe XmlEntityResolverState CheckNeedToResolve(ReadOnlySpan<byte> str, out int requiredBufferLength)
     {
@@ -32,7 +33,8 @@ public readonly struct XmlEntityTable
 
     /// <summary>Проверка необходимости разрешения входной строки.</summary>
     /// <param name="str">строка для проверки</param>
-    /// <param name="requiredBufferLength">длина байта, необходимая для разрешения</param>.
+    /// <param name="requiredBufferLength">длина байта, необходимая для разрешения</param>
+    /// .
     /// <returns>состояние чекера</returns>
     [SkipLocalsInit]
     public unsafe XmlEntityResolverState CheckNeedToResolve(RawString str, out int requiredBufferLength)
@@ -114,7 +116,8 @@ public readonly struct XmlEntityTable
         return requiredBufLen;
     }
 
-    /// <summary>Преобразование входной utf-8-строки в <see langword="string" /></summary>.
+    /// <summary>Преобразование входной utf-8-строки в <see langword="string" /></summary>
+    /// .
     /// <param name="str">строка формата utf-8 для преобразования</param>
     /// <returns>resolved <see langword="string" /></returns>
     public unsafe string ResolveToString(ReadOnlySpan<byte> str)
@@ -127,7 +130,8 @@ public readonly struct XmlEntityTable
         }
     }
 
-    /// <summary>Преобразование входной utf-8-строки в <see langword="string" /></summary>.
+    /// <summary>Преобразование входной utf-8-строки в <see langword="string" /></summary>
+    /// .
     /// <param name="str">строка формата utf-8 для преобразователя</param>
     /// <returns>resolved <see langword="string" /></returns>
     [SkipLocalsInit]
@@ -345,7 +349,8 @@ public readonly struct XmlEntityTable
     }
 }
 
-/// <summary>Состояние <see cref="XmlEntityTable" /></summary>.
+/// <summary>Состояние <see cref="XmlEntityTable" /></summary>
+/// .
 public enum XmlEntityResolverState
 {
     /// <summary>Не требуется разрешать строку.</summary>

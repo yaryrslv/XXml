@@ -9,7 +9,8 @@ public readonly struct Option<T> : IEquatable<Option<T>> where T : unmanaged, IR
 {
     private readonly T _v;
 
-    /// <summary>Получение пустого экземпляра <see cref="Option{T}" />.</summary>.
+    /// <summary>Получение пустого экземпляра <see cref="Option{T}" />.</summary>
+    /// .
     public static Option<T> Null => default;
 
     /// <summary>Создание экземпляра <see cref="Option{T}" />.</summary>
@@ -20,7 +21,8 @@ public readonly struct Option<T> : IEquatable<Option<T>> where T : unmanaged, IR
         _v = v;
     }
 
-    /// <summary>Получает значение, если оно существует, или выбрасывает <see cref="InvalidOperationException" />.</summary>.
+    /// <summary>Получает значение, если оно существует, или выбрасывает <see cref="InvalidOperationException" />.</summary>
+    /// .
     public T Value
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -36,7 +38,8 @@ public readonly struct Option<T> : IEquatable<Option<T>> where T : unmanaged, IR
 
     /// <summary>Попытка получить значение, если оно существует, или метод возвращает false.</summary>
     /// <param name="value">значение, если оно существует. (Не используйте его, если метод возвращает false.)</param>
-    /// <returns>succeed or not</returns>.
+    /// <returns>succeed or not</returns>
+    /// .
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGetValue(out T value)
     {
@@ -83,6 +86,16 @@ public readonly struct Option<T> : IEquatable<Option<T>> where T : unmanaged, IR
     public static implicit operator Option<T>(in T value)
     {
         return new Option<T>(value);
+    }
+
+    public static bool operator ==(Option<T> left, Option<T> right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Option<T> left, Option<T> right)
+    {
+        return !(left == right);
     }
 }
 

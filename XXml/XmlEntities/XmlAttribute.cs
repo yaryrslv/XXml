@@ -42,10 +42,7 @@ public readonly unsafe struct XmlAttribute : IEquatable<XmlAttribute>, IReferenc
         if (namespaceName.IsEmpty || name.IsEmpty) return false;
         if (Node.TryGetValue(out var node) == false) return false;
         if (XmlnsHelper.TryResolveNamespaceAlias(namespaceName, node, out var alias) == false) return false;
-        if (alias.IsEmpty)
-        {
-            return Name == name;
-        }
+        if (alias.IsEmpty) return Name == name;
 
         var nodeName = Name;
         return nodeName.Length == alias.Length + 1 + name.Length
@@ -141,16 +138,16 @@ public readonly unsafe struct XmlAttribute : IEquatable<XmlAttribute>, IReferenc
 
     /// <summary>Получение полного имени атрибута. Возвращает false, если полное имя не может быть зарезовлено.</summary>
     /// <param name="namespaceName">
-    /// имя пространства имен атрибута
-    /// <para />
-    /// ex) "abcde" в случае, если атрибут является a:bar="123" в &lt;node xmlns:a="abcde" a:bar="123" /&gt;
-    /// <para />
+    ///     имя пространства имен атрибута
+    ///     <para />
+    ///     ex) "abcde" в случае, если атрибут является a:bar="123" в &lt;node xmlns:a="abcde" a:bar="123" /&gt;
+    ///     <para />
     /// </param>
     /// <param name="name">
-    /// локальное имя атрибута
-    /// <para />
-    /// ex) "bar" в случае, когда атрибут является a:bar="123" в &lt;node xmlns:a="abcde" a:bar="123" /&gt;
-    /// <para />
+    ///     локальное имя атрибута
+    ///     <para />
+    ///     ex) "bar" в случае, когда атрибут является a:bar="123" в &lt;node xmlns:a="abcde" a:bar="123" /&gt;
+    ///     <para />
     /// </param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -160,13 +157,16 @@ public readonly unsafe struct XmlAttribute : IEquatable<XmlAttribute>, IReferenc
     }
 
     /// <summary>
-    /// Получение полного имени атрибута. Метод бросает <see cref="InvalidOperationException" />, если полное имя не удалось зарезолвить.
+    ///     Получение полного имени атрибута. Метод бросает <see cref="InvalidOperationException" />, если полное имя не
+    ///     удалось зарезолвить.
     /// </summary>
     /// <remarks>
-    /// ex) Возвращает ("abcde", "bar") в случае, если атрибутом является a:bar="123" в &lt;node xmlns:a="abcde" a:bar="123" /&gt;
-    /// <para />
+    ///     ex) Возвращает ("abcde", "bar") в случае, если атрибутом является a:bar="123" в &lt;node xmlns:a="abcde"
+    ///     a:bar="123" /&gt;
+    ///     <para />
     /// </remarks>
-    /// <exception cref="InvalidOperationException">полное имя не удалось разрешить</exception>.
+    /// <exception cref="InvalidOperationException">полное имя не удалось разрешить</exception>
+    /// .
     /// <returns>Пара из имени пространства имен и локального имени</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (RawString NamespaceName, RawString Name) GetFullName()
