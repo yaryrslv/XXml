@@ -2,7 +2,6 @@
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Diagnostics.Windows.Configs;
 using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Exporters.Csv;
 using BenchmarkDotNet.Loggers;
@@ -28,7 +27,6 @@ namespace XXml.Benchmarks
     }
 
     [MemoryDiagnoser]
-    [NativeMemoryProfiler]
     [MarkdownExporterAttribute.GitHub]
     [RyuJitX64Job]
     public class ParserFileBenchmark
@@ -68,7 +66,6 @@ namespace XXml.Benchmarks
                 for (var i = 0; i < reader.AttributeCount; i++)
                 {
                     reader.MoveToAttribute(i);
-                    //Получить аттрибут Action со значением X
                     if (reader.Name == "Action" && reader.Value == "X")
                     {
                         valueString = reader.Name + ": " + reader.Value;

@@ -15,7 +15,7 @@ namespace XXml.XmlEntities;
 public static unsafe class XmlParser
 {
     /// <summary>Маркер порядка следования байтов в формате utf-8</summary>
-    private static ReadOnlySpan<byte> Utf8Bom => new byte[] {0xEF, 0xBB, 0xBF}; // Bytes are embedded in dll, so there are no heap allocation.
+    private static ReadOnlySpan<byte> Utf8Bom => new byte[] {0xEF, 0xBB, 0xBF};
 
     /// <summary>Маркер порядка следования байтов в формате utf-8 (little endian)</summary>
     private static ReadOnlySpan<byte> Utf16Lebom => new byte[] {0xFF, 0xFE};

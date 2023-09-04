@@ -24,6 +24,9 @@
       <None Update="BenchmarksData\TicketsInsert.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="BenchmarksData\TicketsInsertMini.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
