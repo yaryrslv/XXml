@@ -1,4 +1,5 @@
-﻿using XXml.XmlEntities;
+﻿using System.Diagnostics;
+using XXml.XmlEntities;
 
 const string benchmarkFile = "TicketsInsert.xml";
 const string testsDataFolder = "ExamplesData";
@@ -9,20 +10,20 @@ Console.ReadKey();
 
 
 //Пример с использованием XXml
-var testDataXXml = "";
+Console.WriteLine(typeof(XmlParser).Assembly.FullName);
 using var xml = XmlParser.ParseFile(filePath);
 var list = xml.GetAllNodes(XmlNodeType.ElementNode).Where(x => x.Name == "Rec");
 foreach (var item in list) {
-    foreach(var attribute in item.Attributes)
-    {
-        testDataXXml = attribute.Name.ToString() + attribute.Value.ToString();
+    foreach(var attribute in item.Attributes) {
+        Console.WriteLine(attribute.Name + ": " + attribute.Value);
+        Console.Clear();
     }
 }
 xml.Dispose();
 Console.ReadKey();
 
 //Пример с использованием System.Xml.XmlReader
-var testDataSystemXmlXmlReader = "";
+Console.WriteLine(typeof(System.Xml.XmlReader).Assembly.FullName);
 using var reader = System.Xml.XmlReader.Create(filePath);
 while (reader.Read())
 {
@@ -30,7 +31,9 @@ while (reader.Read())
     for (var i = 0; i < reader.AttributeCount; i++)
     {
         reader.MoveToAttribute(i);
-        testDataSystemXmlXmlReader = reader.Name.ToString() + reader.Value.ToString();
+        Debug.WriteLine(reader.Name + ": " + reader.Value);
+        Debug.Flush();
     }
 }
+Console.WriteLine("END");
 Console.ReadKey();
