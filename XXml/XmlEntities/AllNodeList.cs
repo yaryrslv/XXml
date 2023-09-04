@@ -64,7 +64,7 @@ public readonly unsafe struct AllNodeList : IEnumerable<XmlNode>
     }
 
 
-    public struct Enumerator : IEnumerator<XmlNode>
+    private struct Enumerator : IEnumerator<XmlNode>
     {
         private CustomList<XmlNodeStruct>.Enumerator _e;
         private readonly XmlNodeType _targetType;
@@ -92,10 +92,12 @@ public readonly unsafe struct AllNodeList : IEnumerable<XmlNode>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool MoveNext()
         {
-            MoveNext:
-            if (_e.MoveNext() == false) return false;
-            if (_hasTargetType == false || _e.Current->NodeType == _targetType) return true;
-            goto MoveNext;
+            while (_e.MoveNext())
+            {
+                if (!_hasTargetType || _e.Current->NodeType == _targetType)
+                    return true;
+            }
+            return false;
         }
 
         public void Reset()

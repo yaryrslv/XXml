@@ -88,11 +88,12 @@ public readonly unsafe struct XmlNodeDescendantList : IEnumerable<XmlNode>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool MoveNext()
         {
-            MoveNext:
-            if (_e.MoveNext() == false) return false;
-            if (_e.Current->Depth <= _depth) return false;
-            if (_hasTargetType == false || _e.Current->NodeType == _targetType) return true;
-            goto MoveNext;
+            while(true)
+            {
+                if (_e.MoveNext() == false) return false;
+                if (_e.Current->Depth <= _depth) return false;
+                if (_hasTargetType == false || _e.Current->NodeType == _targetType) return true;
+            }
         }
 
         public void Reset()
