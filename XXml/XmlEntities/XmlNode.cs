@@ -166,7 +166,7 @@ public readonly unsafe struct XmlNode : IEquatable<XmlNode>, IReference
         return IsName(namespaceName.AsSpan(), name.AsSpan());
     }
 
-    [SkipLocalsInit]
+    
     public bool IsName(ReadOnlySpan<char> namespaceName, ReadOnlySpan<char> name)
     {
         if (namespaceName.IsEmpty || name.IsEmpty) return false;

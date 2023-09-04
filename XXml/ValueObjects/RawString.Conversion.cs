@@ -247,7 +247,7 @@ unsafe partial struct RawString
         return Split2(separator.AsSpan());
     }
 
-    [SkipLocalsInit]
+    
     private (RawString, RawString) Split2(ReadOnlySpan<char> separator)
     {
         const int charMaxByteCount = 6;

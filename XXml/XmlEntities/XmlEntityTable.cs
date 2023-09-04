@@ -36,7 +36,7 @@ public readonly struct XmlEntityTable
     /// <param name="requiredBufferLength">длина байта, необходимая для разрешения</param>
     /// .
     /// <returns>состояние чекера</returns>
-    [SkipLocalsInit]
+    
     private unsafe XmlEntityResolverState CheckNeedToResolve(RawString str, out int requiredBufferLength)
     {
         const int exBufLen = 5; // Символ юникода может иметь размер до 5 байт.
@@ -151,7 +151,7 @@ public readonly struct XmlEntityTable
     /// .
     /// <param name="str">строка формата utf-8 для преобразователя</param>
     /// <returns>resolved <see langword="string" /></returns>
-    [SkipLocalsInit]
+    
     public unsafe string ResolveToString(RawString str)
     {
         var byteLen = GetResolvedByteLength(str);
@@ -199,7 +199,7 @@ public readonly struct XmlEntityTable
     /// <summary>Разрешить строку.</summary>
     /// <param name="str">строка для резолва</param>
     /// <returns>resolved utf-8 string as byte array</returns>
-    [SkipLocalsInit]
+    
     public byte[] Resolve(RawString str)
     {
         var byteLen = GetResolvedByteLength(str);
@@ -246,7 +246,7 @@ public readonly struct XmlEntityTable
     /// <param name="str">строка для преобразования</param>
     /// <param name="bufferToResolve">буфер, используемый при разрешении строки</param>
     /// <returns>байт длины разрешенной строки</returns>
-    [SkipLocalsInit]
+    
     private unsafe int Resolve(RawString str, Span<byte> bufferToResolve)
     {
         const int exBufLen = 5;

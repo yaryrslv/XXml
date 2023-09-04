@@ -233,7 +233,7 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
         return StartsWith(other.AsSpan());
     }
 
-    [SkipLocalsInit]
+    
     private bool StartsWith(ReadOnlySpan<char> other)
     {
         if (other.Length == 0) return true;
@@ -286,7 +286,7 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
         return EndsWith(other.AsSpan());
     }
 
-    [SkipLocalsInit]
+    
     private bool EndsWith(ReadOnlySpan<char> other)
     {
         if (other.Length == 0) return true;
@@ -593,7 +593,7 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
         return !(left == right);
     }
 
-    [SkipLocalsInit]
+    
     public static bool operator ==(RawString left, ReadOnlySpan<char> right)
     {
         if (right.IsEmpty) return left.IsEmpty;

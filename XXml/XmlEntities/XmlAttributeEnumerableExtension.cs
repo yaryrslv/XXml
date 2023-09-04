@@ -98,7 +98,7 @@ public static class XmlAttributeEnumerableExtension
     /// <param name="source">список источников для перечисления</param>
     /// <param name="name">имя атрибута для поиска</param>
     /// <returns> найденный атрибут в виде <see cref="Option{T}" /></returns>
-    [SkipLocalsInit]
+    
     public static unsafe Option<XmlAttribute> FindOrDefault<TAttributes>(this TAttributes source, ReadOnlySpan<char> name) where TAttributes : IEnumerable<XmlAttribute>
     {
         if (name.IsEmpty) return Option<XmlAttribute>.Null;
@@ -146,7 +146,7 @@ public static class XmlAttributeEnumerableExtension
         return FindOrDefault(source, name.AsSpan());
     }
 
-    [SkipLocalsInit]
+    
     public static unsafe Option<XmlAttribute> FindOrDefault<TAttributes>(this TAttributes source, ReadOnlySpan<char> namespaceName, ReadOnlySpan<char> name)
         where TAttributes : IEnumerable<XmlAttribute>
     {
