@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XXml.Tests", "XXml.Tests\XX
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XXml.Benchmarks", "XXml.Benchmarks\XXml.Benchmarks.csproj", "{E67CFD57-04AC-4567-B1FB-17E45A1C79CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XXml.Example", "XXml.Example\XXml.Example.csproj", "{857B88A4-BCC6-4F91-A373-AC7B952EC904}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XXml.Examples", "XXml.Examples\XXml.Examples.csproj", "{857B88A4-BCC6-4F91-A373-AC7B952EC904}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
