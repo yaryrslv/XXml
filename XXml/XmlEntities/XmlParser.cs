@@ -57,7 +57,7 @@ public static unsafe class XmlParser
     /// <summary>Паросинг xml-файла в кодировке UTF8 (как с BOM, так и без него).</summary>
     /// <param name="stream">поток для чтения</param>
     /// <returns>xml объект</returns>
-    private static XmlObject Parse(Stream? stream)
+    public static XmlObject Parse(Stream? stream)
     {
         var fileSizeHint = stream is {CanSeek: true} ? (int) stream.Length : 1024 * 1024;
         return Parse(stream, fileSizeHint);

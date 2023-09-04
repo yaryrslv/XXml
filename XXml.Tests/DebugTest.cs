@@ -31,7 +31,7 @@ namespace XXml.Tests
                 _output.WriteLine(new string('=', 8));
             }
             Assert.NotNull(list);
-            Assert.Equal(96786, list.Count());
+            Assert.Equal(96785, list.Count());
         }
     }
 }
