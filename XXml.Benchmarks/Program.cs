@@ -2,6 +2,7 @@
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Diagnostics.Windows.Configs;
 using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Exporters.Csv;
 using BenchmarkDotNet.Loggers;
@@ -29,6 +30,7 @@ namespace XXml.Benchmarks
     [MemoryDiagnoser]
     [MarkdownExporterAttribute.GitHub]
     [RyuJitX64Job]
+    [NativeMemoryProfiler]
     public class ParserFileBenchmark
     {
         private const string BenchmarkFile = "TicketsInsert.xml";
