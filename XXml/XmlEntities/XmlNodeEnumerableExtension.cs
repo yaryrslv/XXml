@@ -124,7 +124,7 @@ public static class XmlNodeEnumerableExtension
         return FindOrDefault(source, namespaceName.AsSpan(), name.AsSpan());
     }
 
-    [SkipLocalsInit]
+    
     public static unsafe Option<XmlNode> FindOrDefault<TNodes>(this TNodes source, ReadOnlySpan<char> namespaceName, ReadOnlySpan<char> name) where TNodes : IEnumerable<XmlNode>
     {
         if (namespaceName.IsEmpty || name.IsEmpty) return Option<XmlNode>.Null;

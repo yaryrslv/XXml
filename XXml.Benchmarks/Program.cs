@@ -39,19 +39,26 @@ namespace XXml.Benchmarks
         [Benchmark(Baseline = true, Description = "XXml")]
         public void XmlParser_GetAllNodesByTagName()
         {
+            var valueString = "";
             using var xml = XmlParser.ParseFile(FilePath);
             var list = xml.GetAllNodes(XmlNodeType.ElementNode).Where(x => x.Name == "Rec");
             foreach (var item in list) {
                 foreach(var attribute in item.Attributes) {
-                    Debug.WriteLine(attribute.Name + ": " + attribute.Value);
+                    if (attribute.Name == "Action" && attribute.Value == "X")
+                    {
+                        valueString = attribute.Name + ": " + attribute.Value;
+                        break;
+                    }
                 }
             }
             xml.Dispose();
+            Debug.WriteLine(valueString);
         }
         
         [Benchmark(Description = "System.Xml.XmlReader")]
         public void SystemXmlReader_XmlParser_GetAllNodesByTagName()
         {
+            var valueString = "";
             using var reader = System.Xml.XmlReader.Create(FilePath);
             while (reader.Read())
             {
@@ -59,9 +66,13 @@ namespace XXml.Benchmarks
                 for (var i = 0; i < reader.AttributeCount; i++)
                 {
                     reader.MoveToAttribute(i);
-                    Debug.WriteLine(reader.Name + ": " + reader.Value);
+                    if (reader.Name == "Action" && reader.Value == "X")
+                    {
+                        valueString = reader.Name + ": " + reader.Value;
+                    }
                 }
             }
+            Debug.WriteLine(valueString);
         }
     }
 }

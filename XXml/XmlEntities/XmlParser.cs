@@ -15,7 +15,7 @@ namespace XXml.XmlEntities;
 public static unsafe class XmlParser
 {
     /// <summary>Маркер порядка следования байтов в формате utf-8</summary>
-    private static ReadOnlySpan<byte> Utf8Bom => new byte[] {0xEF, 0xBB, 0xBF}; // Bytes are embedded in dll, so there are no heap allocation.
+    private static ReadOnlySpan<byte> Utf8Bom => new byte[] {0xEF, 0xBB, 0xBF};
 
     /// <summary>Маркер порядка следования байтов в формате utf-8 (little endian)</summary>
     private static ReadOnlySpan<byte> Utf16Lebom => new byte[] {0xFF, 0xFE};
@@ -57,7 +57,7 @@ public static unsafe class XmlParser
     /// <summary>Паросинг xml-файла в кодировке UTF8 (как с BOM, так и без него).</summary>
     /// <param name="stream">поток для чтения</param>
     /// <returns>xml объект</returns>
-    private static XmlObject Parse(Stream? stream)
+    public static XmlObject Parse(Stream? stream)
     {
         var fileSizeHint = stream is {CanSeek: true} ? (int) stream.Length : 1024 * 1024;
         return Parse(stream, fileSizeHint);

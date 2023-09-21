@@ -36,8 +36,8 @@ public readonly struct XmlEntityTable
     /// <param name="requiredBufferLength">длина байта, необходимая для разрешения</param>
     /// .
     /// <returns>состояние чекера</returns>
-    [SkipLocalsInit]
-    public unsafe XmlEntityResolverState CheckNeedToResolve(RawString str, out int requiredBufferLength)
+    
+    private unsafe XmlEntityResolverState CheckNeedToResolve(RawString str, out int requiredBufferLength)
     {
         const int exBufLen = 5; // Символ юникода может иметь размер до 5 байт.
         var exBuf = stackalloc byte[exBufLen];
@@ -51,7 +51,12 @@ public readonly struct XmlEntityTable
             var c = str.At(i);
             if (c == '&')
             {
-                if (pos >= 0) goto CanNotResolve;
+                if (pos >= 0)
+                {
+                    requiredBufferLength = 0;
+                    return XmlEntityResolverState.CannotResolve;
+                }
+
                 needToResolve = true;
                 pos = i + 1;
                 continue;
@@ -59,12 +64,22 @@ public readonly struct XmlEntityTable
 
             if (c == ';')
             {
-                if (pos < 0) goto CanNotResolve;
+                if (pos < 0)
+                {
+                    requiredBufferLength = 0;
+                    return XmlEntityResolverState.CannotResolve;
+                }
+
                 var alias = str.SliceUnsafe(pos, i - pos);
-                if (TryGetValue(alias, out var value) == false)
+                if (!TryGetValue(alias, out var value))
                 {
                     var tmp = SpanHelper.CreateSpan<byte>(exBuf, exBufLen);
-                    if (TryUnicodePointToUtf8(alias, tmp, out var byteLen) == false) goto CanNotResolve;
+                    if (TryUnicodePointToUtf8(alias, tmp, out var byteLen) == false)
+                    {
+                        requiredBufferLength = 0;
+                        return XmlEntityResolverState.CannotResolve;
+                    }
+
                     value = tmp.Slice(0, byteLen);
                 }
                 else
@@ -72,7 +87,11 @@ public readonly struct XmlEntityTable
                     // Значение entity может содержать другой псевдоним enity.
                     var recursiveResolveNeeded = CheckNeedToResolve(value, out var l);
                     if (recursiveResolveNeeded == XmlEntityResolverState.CannotResolve)
-                        goto CanNotResolve;
+                    {
+                        requiredBufferLength = 0;
+                        return XmlEntityResolverState.CannotResolve;
+                    }
+
                     if (recursiveResolveNeeded == XmlEntityResolverState.NeedToResolve) len = len - value.Length + l;
                 }
 
@@ -81,16 +100,14 @@ public readonly struct XmlEntityTable
             }
         }
 
-        if (pos >= 0) goto CanNotResolve;
-
-        requiredBufferLength = len;
-        return needToResolve ? XmlEntityResolverState.NeedToResolve : XmlEntityResolverState.NoNeeded;
-
-        CanNotResolve:
+        if (pos >= 0)
         {
             requiredBufferLength = 0;
             return XmlEntityResolverState.CannotResolve;
         }
+
+        requiredBufferLength = len;
+        return needToResolve ? XmlEntityResolverState.NeedToResolve : XmlEntityResolverState.NoNeeded;
     }
 
     /// <summary>Получение длины байта буфера, которая необходима резольверу для разрешения строки.</summary>
@@ -134,7 +151,7 @@ public readonly struct XmlEntityTable
     /// .
     /// <param name="str">строка формата utf-8 для преобразователя</param>
     /// <returns>resolved <see langword="string" /></returns>
-    [SkipLocalsInit]
+    
     public unsafe string ResolveToString(RawString str)
     {
         var byteLen = GetResolvedByteLength(str);
@@ -182,7 +199,7 @@ public readonly struct XmlEntityTable
     /// <summary>Разрешить строку.</summary>
     /// <param name="str">строка для резолва</param>
     /// <returns>resolved utf-8 string as byte array</returns>
-    [SkipLocalsInit]
+    
     public byte[] Resolve(RawString str)
     {
         var byteLen = GetResolvedByteLength(str);
@@ -229,7 +246,7 @@ public readonly struct XmlEntityTable
     /// <param name="str">строка для преобразования</param>
     /// <param name="bufferToResolve">буфер, используемый при разрешении строки</param>
     /// <returns>байт длины разрешенной строки</returns>
-    [SkipLocalsInit]
+    
     private unsafe int Resolve(RawString str, Span<byte> bufferToResolve)
     {
         const int exBufLen = 5;
@@ -240,43 +257,43 @@ public readonly struct XmlEntityTable
         {
             var i = 0;
             var j = 0;
-            None:
+
+            while (i < str.Length)
             {
-                if (i >= str.Length) goto End;
                 var c = str.At(i++);
-                if (c == '&') goto Alias;
-                if (j >= bufferToResolve.Length) throw new ArgumentOutOfRangeException("Buffer is too short.");
-                buf[j++] = c;
-                goto None;
-            }
-
-            Alias:
-            {
-                var start = i;
-                while (true)
+                if (c == '&')
                 {
-                    if (i >= str.Length) throw new FormatException($"Cannot end with '&'. Invalid input string: '{str}'");
-                    if (str.At(i++) == ';')
+                    var start = i;
+                    while (true)
                     {
-                        var alias = str.SliceUnsafe(start, i - 1 - start);
-                        if (TryGetValue(alias, out var value) == false)
-                        {
-                            var tmp = SpanHelper.CreateSpan<byte>(exBuf, exBufLen);
-                            if (TryUnicodePointToUtf8(alias, tmp, out var byteLen) == false) throw new FormatException($"Could not resolve the entity: '&{alias};'");
-                            value = tmp.Slice(0, byteLen);
-                        }
-                        else
-                        {
-                            // Значение entity может содержать другой псевдоним enity.
-                            var recursiveResolveNeeded = CheckNeedToResolve(value, out var l);
-                            if (recursiveResolveNeeded == XmlEntityResolverState.CannotResolve)
-                                throw new FormatException("Could not resolve an entity");
-                            if (recursiveResolveNeeded == XmlEntityResolverState.NeedToResolve) value = Resolve(value);
-                        }
+                        if (i >= str.Length)
+                            throw new FormatException($"Cannot end with '&'. Invalid input string: '{str}'");
 
-                        // Если моя реализация верна, то value.Length не будет равна нулю, но лучше всё равно чекнуть (value.Length > 0)
+                        if (str.At(i++) == ';')
                         {
-                            if (j + value.Length - 1 >= bufferToResolve.Length) throw new ArgumentOutOfRangeException("Buffer is too short.");
+                            var alias = str.SliceUnsafe(start, i - 1 - start);
+                            if (TryGetValue(alias, out var value) == false)
+                            {
+                                var tmp = SpanHelper.CreateSpan<byte>(exBuf, exBufLen);
+                                if (TryUnicodePointToUtf8(alias, tmp, out var byteLen) == false)
+                                    throw new FormatException($"Could not resolve the entity: '&{alias};'");
+
+                                value = tmp.Slice(0, byteLen);
+                            }
+                            else
+                            {
+                                // Значение entity может содержать другой псевдоним enity.
+                                var recursiveResolveNeeded = CheckNeedToResolve(value, out var l);
+                                if (recursiveResolveNeeded == XmlEntityResolverState.CannotResolve)
+                                    throw new FormatException("Could not resolve an entity");
+
+                                if (recursiveResolveNeeded == XmlEntityResolverState.NeedToResolve)
+                                    value = Resolve(value);
+                            }
+
+                            // Если моя реализация верна, то value.Length не будет равна нулю, но лучше всё равно чекнуть (value.Length > 0)
+                            if (j + value.Length - 1 >= bufferToResolve.Length)
+                                throw new ArgumentOutOfRangeException("Buffer is too short.");
 
                             fixed (byte* v = value)
                             {
@@ -284,21 +301,23 @@ public readonly struct XmlEntityTable
                             }
 
                             j += value.Length;
+                            break;
                         }
-
-                        break;
                     }
                 }
+                else
+                {
+                    if (j >= bufferToResolve.Length)
+                        throw new ArgumentOutOfRangeException("Buffer is too short.");
 
-                goto None;
+                    buf[j++] = c;
+                }
             }
 
-            End:
-            {
-                return j;
-            }
+            return j;
         }
     }
+
 
     private bool TryGetValue(RawString alias, out ReadOnlySpan<byte> value)
     {

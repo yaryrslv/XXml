@@ -134,14 +134,18 @@ public readonly unsafe struct XmlNodeList : ICollection<XmlNode>, IReference
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool MoveNext()
         {
-            MoveNext:
-            if (_next == null) return false;
-            _current = _next;
-            _next = _next->Sibling;
+            while (_next != null)
+            {
+                _current = _next;
+                _next = _next->Sibling;
 
-            if (_hasTargetType == false || _current->NodeType == _targetType) return true;
+                if (!_hasTargetType || _current->NodeType == _targetType)
+                {
+                    return true;
+                }
+            }
 
-            goto MoveNext;
+            return false;
         }
 
         public void Reset()

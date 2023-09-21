@@ -69,7 +69,7 @@ public readonly unsafe struct XmlAttribute : IEquatable<XmlAttribute>, IReferenc
         return IsName(namespaceName.AsSpan(), name.AsSpan());
     }
 
-    [SkipLocalsInit]
+    
     public bool IsName(ReadOnlySpan<char> namespaceName, ReadOnlySpan<char> name)
     {
         if (namespaceName.IsEmpty || name.IsEmpty) return false;

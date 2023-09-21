@@ -8,23 +8,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="BenchmarkDotNet" Version="0.13.8" />
-      <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.13.8" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\XXml\XXml.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="BenchmarksData\" />
+      <Folder Include="ExamplesData\" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="BenchmarksData\TicketsInsert.xml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="BenchmarksData\TicketsInsertMini.xml">
+      <None Update="ExamplesData\TicketsInsert.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>

@@ -216,7 +216,7 @@ unsafe partial struct RawString
 
     public (RawString, RawString) Split2(ReadOnlySpan<byte> separator)
     {
-        if ((uint) separator.Length > (uint) Length) return (this, Empty);
+        if (separator.Length > Length) return (this, Empty);
         var maxLoop = Length - separator.Length + 1;
         for (var i = 0; i < maxLoop; i++)
             if (SliceUnsafe(i, separator.Length).SequenceEqual(separator))
@@ -230,7 +230,10 @@ unsafe partial struct RawString
 
     public (RawString, RawString) Split2(char separator)
     {
-        if (separator < 128) return Split2((byte) separator);
+        if (separator < 128)
+        {
+            return Split2((byte) separator);
+        }
 
         const int charMaxByteCount = 6;
         var buf = stackalloc byte[charMaxByteCount];
@@ -244,13 +247,16 @@ unsafe partial struct RawString
         return Split2(separator.AsSpan());
     }
 
-    [SkipLocalsInit]
-    public (RawString, RawString) Split2(ReadOnlySpan<char> separator)
+    
+    private (RawString, RawString) Split2(ReadOnlySpan<char> separator)
     {
         const int charMaxByteCount = 6;
         const int stackBufSize = 128;
         const int thresholdLen = stackBufSize / charMaxByteCount;
-        if (separator.Length == 1 && separator[0] < 128) return Split2((byte) separator[0]);
+        if (separator.Length == 1 && separator[0] < 128)
+        {
+            return Split2((byte) separator[0]);
+        }
         if (separator.Length <= thresholdLen)
         {
             var buf = stackalloc byte[stackBufSize];
