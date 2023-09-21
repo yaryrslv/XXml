@@ -1,5 +1,11 @@
 # XXml
-
+## Annotation
+Simple and universal library for working with XML with acceptable speed, supports:
+- Unity >= 18
+- .NET Framework 4.8
+- .NET Core 3.2
+- .NET 5
+- .NET 6
 ## Benchmarks
 ```
 BenchmarkDotNet v0.13.8, Windows 10 (10.0.19045.3324/22H2/2022Update)
