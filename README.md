@@ -1,12 +1,19 @@
 # XXml
 
 ## Annotation
-Simple and universal library for large XML files parsing with acceptable speed, supports:
+Simple and universal library for large XML files parsing with acceptable speed  
+
+Supported platforms:  
+
 - Unity >= 18
 - .NET Framework 4.8
 - .NET Core 3.2
 - .NET 5
 - .NET 6
+
+Supported OS:
+- Windows
+- Linux
 
 ## Benchmarks
 ```
