@@ -96,6 +96,6 @@ internal unsafe ref struct RawStringPairList
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        public Pair[] Items { get; }
+        public readonly Pair[] Items;
     }
 }

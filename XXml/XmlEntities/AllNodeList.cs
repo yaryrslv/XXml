@@ -13,7 +13,7 @@ public readonly unsafe struct AllNodeList : IEnumerable<XmlNode>
     private readonly CustomList<XmlNodeStruct> _nodes;
     private readonly XmlNodeType? _targetType;
 
-    public int Count { get; }
+    public readonly int Count;
 
     internal AllNodeList(CustomList<XmlNodeStruct> nodes, int count, XmlNodeType? targetType)
     {

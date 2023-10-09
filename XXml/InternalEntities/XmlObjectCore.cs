@@ -156,9 +156,9 @@ internal unsafe struct NodeStore : IDisposable
 
     public CustomList<XmlAttributeStruct> AllAttrs => _allAttrs;
     public readonly int NodeCount => _allNodes.Count;
-    private int ElementNodeCount { get; set; }
+    private int _elementNodeCount;
 
-    private readonly int TextNodeCount => _allNodes.Count - ElementNodeCount;
+    private readonly int TextNodeCount => _allNodes.Count - _elementNodeCount;
 
     public XmlNode RootNode => new(_allNodes.FirstItem);
 
@@ -174,7 +174,7 @@ internal unsafe struct NodeStore : IDisposable
             {
                 _allNodes = allNodes,
                 _allAttrs = allAttrs,
-                ElementNodeCount = 0
+                _elementNodeCount = 0
             };
         }
         catch
@@ -196,7 +196,7 @@ internal unsafe struct NodeStore : IDisposable
     {
         var elementNode = _allNodes.GetPointerToAdd(out var nodeIndex);
         *elementNode = XmlNodeStruct.CreateElementNode(_allNodes, nodeIndex, depth, name, nodeStrPtr, _allAttrs);
-        ElementNodeCount++;
+        _elementNodeCount++;
         return elementNode;
     }
 
@@ -205,7 +205,7 @@ internal unsafe struct NodeStore : IDisposable
         var count = targetType switch
         {
             null => NodeCount,
-            XmlNodeType.ElementNode => ElementNodeCount,
+            XmlNodeType.ElementNode => _elementNodeCount,
             XmlNodeType.TextNode => TextNodeCount,
             _ => default
         };

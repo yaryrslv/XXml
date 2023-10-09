@@ -23,7 +23,7 @@ public readonly unsafe partial struct RawString : IEquatable<RawString>
     public bool IsEmpty => Length == 0;
 
     /// <summary>Получение длины байтового массива. (НЕ количество символов)</summary>
-    public int Length { get; }
+    public readonly int Length;
 
     /// <summary>Получение указателя на начлао набора символов utf-8.</summary>
     /// .
