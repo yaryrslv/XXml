@@ -63,7 +63,12 @@ internal readonly unsafe struct CustomList<T> : IDisposable, IReference where T 
     static CustomList()
     {
         _lineCapacity = new int[ListInfo.BucketCount];
-        for (var i = 0; i < _lineCapacity.Length; i++) _lineCapacity[i] = 1 << (i + 4);
+        var maxBucketSize = (int.MaxValue - 16) / sizeof(T);
+        for (var i = 0; i < _lineCapacity.Length; i++)
+        {
+            var cap = 1 << (i + 4);
+            _lineCapacity[i] = cap <= maxBucketSize ? cap : maxBucketSize;
+        }
     }
 
     private CustomList(ListInfo* listInfo)
@@ -175,7 +180,6 @@ internal readonly unsafe struct CustomList<T> : IDisposable, IReference where T 
         AllocationSafety.Add(allocSize);
         line->Count = 0;
         line->Capacity = lineCapacity;
-
         listInfo->CurrentLine = line;
         (&listInfo->L0)[*newLineNum] = line;
         return line;
@@ -245,7 +249,7 @@ internal readonly unsafe struct CustomList<T> : IDisposable, IReference where T 
         public bool MoveNext()
         {
             if (_i >= _count) return false;
-            Current = &(&_line->FirstItem)[_posInLine];
+            Current = (T*)(&(&_line->FirstItem)[_posInLine]);
             _posInLine++;
             _i++;
             if (_posInLine >= _line->Capacity) NewLine();

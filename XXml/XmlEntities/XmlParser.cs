@@ -287,7 +287,7 @@ public static unsafe class XmlParser
 
         None: // Конец XML ноды.
         {
-            if (SkipEmpty(data, ref i) == false)
+            if (SkipEmpty(ref data, ref i) == false)
             {
                 if (nodeStack.Count == 0)
                     goto End;
@@ -441,7 +441,7 @@ public static unsafe class XmlParser
         {
             {
                 var pos = i;
-                if (SkipEmpty(data, ref i) == false) throw NewFormatException(data, pos, "Unexpected end of xml. DOCTYPE is not closed.");
+                if (SkipEmpty(ref data, ref i) == false) throw NewFormatException(data, pos, "Unexpected end of xml. DOCTYPE is not closed.");
             }
 
             var c = data.At(i++);
@@ -466,17 +466,17 @@ public static unsafe class XmlParser
                 // Парсер игнорирует внешнюю сущность.
 
                 i += strEntity.Length;
-                if (IsEmptyChar(data.At(i)) == false) throw NewFormatException(data, i, "Invalid character.");
+                if (IsEmptyChar(ref data.At(i)) == false) throw NewFormatException(data, i, "Invalid character.");
                 i++;
                 {
                     var pos = i;
-                    if (SkipEmpty(data, ref i) == false) throw NewFormatException(data, pos, "Unexpected end of xml. DOCTYPE is not closed.");
+                    if (SkipEmpty(ref data, ref i) == false) throw NewFormatException(data, pos, "Unexpected end of xml. DOCTYPE is not closed.");
                 }
 
                 var entityNameStart = i;
                 if (SkipToEmpty(data, ref i) == false) throw NewFormatException(data, entityNameStart, "Unexpected end of xml. ENTITY is invalid formatted.");
                 var name = data.SliceUnsafe(entityNameStart, i - entityNameStart);
-                if (SkipEmpty(data, ref i) == false) throw NewFormatException(data, entityNameStart + name.Length, "Unexpected end of xml. ENTITY is not closed.");
+                if (SkipEmpty(ref data, ref i) == false) throw NewFormatException(data, entityNameStart + name.Length, "Unexpected end of xml. ENTITY is not closed.");
 
                 var quote = data.At(i);
                 if (quote == '"' || quote == '\'')
@@ -635,24 +635,25 @@ public static unsafe class XmlParser
             return false;
         {
             var j = i + strDoctype.Length;
-            if (j >= data.Length || IsEmptyChar(data.At(j)) == false)
+            if (j >= data.Length || IsEmptyChar(ref data.At(j)) == false)
                 // The node is not DOCTYPE
                 return false;
             i += strDoctype.Length + 1;
-            if (SkipEmpty(data, ref i) == false) throw NewFormatException(data, j, "Failed to parse DOCTYPE.");
+            if (SkipEmpty(ref data, ref i) == false) throw NewFormatException(data, j, "Failed to parse DOCTYPE.");
         }
 
         if (hasNode) throw NewFormatException(data, i - 2, "DTD must be defined before the document root element.");
         if (optional.DocumentType->Body.IsEmpty == false) throw NewFormatException(data, i - 2, "Cannot have multiple DTDs.");
 
         var docType = optional.DocumentType;
-        if (SkipEmpty(data, ref i) == false) throw NewFormatException(data, bodyStart, "Failed to parse DOCTYPE.");
+        if (SkipEmpty(ref data, ref i) == false) throw NewFormatException(data, bodyStart, "Failed to parse DOCTYPE.");
 
         // <!DOCTYPE rootname
         //           |
         //           `--> data[nameStart]
         var nameStart = i;
-        Debug.Assert(IsEmptyChar(data[nameStart]) == false);
+        var b = data[nameStart];
+        Debug.Assert(IsEmptyChar(ref b) == false);
         i++;
 
         while (true)
@@ -670,12 +671,12 @@ public static unsafe class XmlParser
                 return true;
             }
 
-            if (IsEmptyChar(c))
+            if (IsEmptyChar(ref c))
             {
                 var name = data.Slice(nameStart, i - 1 - nameStart);
                 Debug.Assert(name.Length > 0);
                 docType->Name = name;
-                if (SkipEmpty(data, ref i) == false) throw NewFormatException(data, nameStart + name.Length, "Unexpected end of xml. Failed to parse DOCTYPE.");
+                if (SkipEmpty(ref data, ref i) == false) throw NewFormatException(data, nameStart + name.Length, "Unexpected end of xml. Failed to parse DOCTYPE.");
                 if (data.At(i) == '[')
                 {
                     // <!DOCTYPE rootname [...]>
@@ -690,7 +691,7 @@ public static unsafe class XmlParser
                 while (true)
                 {
                     if (i >= data.Length) throw NewFormatException(data, identifierStart, "Unexpected end of xml. Failed to parse DOCTYPE.");
-                    if (IsEmptyChar(data.At(i++))) break;
+                    if (IsEmptyChar(ref data.At(i++))) break;
                 }
 
                 var identifier = data.SliceUnsafe(identifierStart, i - 1 - identifierStart);
@@ -699,7 +700,7 @@ public static unsafe class XmlParser
                     // <!DOCTYPE rootname SYSTEM "...">
                     {
                         var pos = i;
-                        if (SkipEmpty(data, ref i) == false) throw NewFormatException(data, pos, "Unexpected end of xml. Failed to parse DOCTYPE.");
+                        if (SkipEmpty(ref data, ref i) == false) throw NewFormatException(data, pos, "Unexpected end of xml. Failed to parse DOCTYPE.");
                     }
                     RawString uri;
                     {
@@ -708,7 +709,7 @@ public static unsafe class XmlParser
                     }
                     {
                         var pos = i;
-                        if (SkipEmpty(data, ref i) == false) throw NewFormatException(data, pos, "Unexpected end of xml. Failed to parse DOCTYPE.");
+                        if (SkipEmpty(ref data, ref i) == false) throw NewFormatException(data, pos, "Unexpected end of xml. Failed to parse DOCTYPE.");
                     }
                     if (i >= data.Length || data.At(i++) != '>') throw NewFormatException(data, i, "Unexpected end of xml. DOCTYPE is not closed.");
 
@@ -726,7 +727,7 @@ public static unsafe class XmlParser
                     // <!DOCTYPE rootnode PUBLIC "..." "...">
                     {
                         var pos = i;
-                        if (SkipEmpty(data, ref i) == false) throw NewFormatException(data, pos, "Unexpected end of xml. Failed to parse DOCTYPE.");
+                        if (SkipEmpty(ref data, ref i) == false) throw NewFormatException(data, pos, "Unexpected end of xml. Failed to parse DOCTYPE.");
                     }
                     RawString publicIdentifier;
                     RawString uri;
@@ -736,7 +737,7 @@ public static unsafe class XmlParser
                     }
                     {
                         var pos = i;
-                        if (SkipEmpty(data, ref i) == false) throw NewFormatException(data, pos, "Unexpected end of xml. Failed to parse DOCTYPE.");
+                        if (SkipEmpty(ref data, ref i) == false) throw NewFormatException(data, pos, "Unexpected end of xml. Failed to parse DOCTYPE.");
                     }
                     {
                         var pos = i;
@@ -744,7 +745,7 @@ public static unsafe class XmlParser
                     }
                     {
                         var pos = i;
-                        if (SkipEmpty(data, ref i) == false) throw NewFormatException(data, pos, "Unexpected end of xml. Failed to parse DOCTYPE.");
+                        if (SkipEmpty(ref data, ref i) == false) throw NewFormatException(data, pos, "Unexpected end of xml. Failed to parse DOCTYPE.");
                     }
                     if (i >= data.Length || data.At(i++) != '>') throw NewFormatException(data, i, "Unexpected end of xml. DOCTYPE is not closed.");
 
@@ -828,22 +829,22 @@ public static unsafe class XmlParser
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static bool SkipEmpty(RawString data, ref int i)
+    private static bool SkipEmpty(ref RawString data, ref int i)
     {
         // Пропускаем пробельные символы, табуляцию, CR и LF.
         // Возвращает false, если данные закончились, иначе true.
 
         if (i >= data.Length) return false;
-        if (IsEmptyChar(data.At(i)) == false) return true;
-        return Loop(data, ref i);
+        if (IsEmptyChar(ref data.At(i)) == false) return true;
+        return Loop(ref data, ref i);
 
-        static bool Loop(RawString data, ref int i)
+        static bool Loop(ref RawString data, ref int i)
         {
             i++;
             while (true)
             {
                 if (i >= data.Length) return false;
-                if (IsEmptyChar(data.At(i)))
+                if (IsEmptyChar(ref data.At(i)))
                 {
                     i++;
                     continue;
@@ -946,7 +947,7 @@ public static unsafe class XmlParser
         }
 
         name = data.Slice(nameStart, i - nameStart);
-        if (SkipEmpty(data, ref i) == false) throw NewFormatException(data, nameStart + name.Length, "Unexpected end of xml.");
+        if (SkipEmpty(ref data, ref i) == false) throw NewFormatException(data, nameStart + name.Length, "Unexpected end of xml.");
     }
 
     private static XmlAttributeStruct GetAttr(RawString data, ref int i, XmlNodeStruct* node)
@@ -980,10 +981,10 @@ public static unsafe class XmlParser
         {
             if (i >= data.Length) throw NewFormatException(data, nameStart, "Unexpected end of xml. The attribute name is not found.");
             var next = data.At(i++);
-            if (IsEmptyChar(next))
+            if (IsEmptyChar(ref next))
             {
                 var nameLen = i - 1 - nameStart;
-                if (SkipEmpty(data, ref i) == false) throw NewFormatException(data, nameStart, "Unexpected end of xml. The attribute name is not found.");
+                if (SkipEmpty(ref data, ref i) == false) throw NewFormatException(data, nameStart, "Unexpected end of xml. The attribute name is not found.");
                 var c = data.At(i++);
                 if (c == '=')
                 {
@@ -1003,7 +1004,7 @@ public static unsafe class XmlParser
 
         {
             var pos = i;
-            if (SkipEmpty(data, ref i) == false) throw NewFormatException(data, pos, "Unexpected end of xml. The attribute value is not found.");
+            if (SkipEmpty(ref data, ref i) == false) throw NewFormatException(data, pos, "Unexpected end of xml. The attribute value is not found.");
         }
 
         // ---------------------------------
@@ -1032,13 +1033,13 @@ public static unsafe class XmlParser
         i++;
         {
             var pos = i;
-            if (SkipEmpty(data, ref i) == false) throw NewFormatException(data, pos, "Unexpected end of xml. The element node is not closed.");
+            if (SkipEmpty(ref data, ref i) == false) throw NewFormatException(data, pos, "Unexpected end of xml. The element node is not closed.");
         }
         return new XmlAttributeStruct(name, value, node);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static bool IsEmptyChar(byte c)
+    private static bool IsEmptyChar(ref byte c)
     {
         return c == ' ' || c == '\t' || c == '\n' || c == '\r';
     }
